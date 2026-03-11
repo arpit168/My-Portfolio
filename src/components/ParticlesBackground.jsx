@@ -20,9 +20,8 @@ export default function ParticlesBackgroun() {
                 this.speedX = (Math.random() - 0.5) * 0.5;
                 this.speedY = (Math.random() - 0.5) * 0.5
             }
-
             draw() {
-                ctx.beginpath();
+                ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                 ctx.shadowBlur = 10;
                 ctx.shadowColor = this.color
@@ -61,12 +60,20 @@ export default function ParticlesBackgroun() {
 
 
         let animationId;
-        function animate(){
-            ctx.clearRect(0,0,canvas.width, canvas.height);
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => p.update());
+            animationId = requestAnimationFrame(animate)
+        }
+        animate();
+
+        return () => {
+            cancelAnimationFrame(animationId)
+            window.removeEventListener("resize", handleResize)
         }
 
 
-    })
+    }, [])
 
 
     return (

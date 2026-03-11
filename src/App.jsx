@@ -1,3 +1,4 @@
+import CustomCursor from "./components/CustomCursor";
 import Navbar from "./components/Navbar";
 import ParticlesBackground from "./components/ParticlesBackground";
 import About from "./sections/About";
@@ -11,22 +12,23 @@ import Testimonials from "./sections/Testimonials";
 
 
 
-export default function App(){
+export default function App() {
 
   return (
-    <div className="relative gradient text-white">
-      <ParticlesBackground/>
+    <div className="relative gradient text-white">\
+      <CustomCursor />
+      <ParticlesBackground />
 
-      <Navbar/>
-      <Home/>
-      <About/>
-      <Skills/>
-      <Projects/>
-      <Experience/>
-      <Testimonials/>
-      <Contact/>
-      <Footer/>
-      
+      <Navbar />
+      <Home />
+      <About />
+      <Skills />
+      <Projects />
+      <Experience />
+      <Testimonials />
+      <Contact />
+      <Footer />
+
     </div>
   )
 }
