@@ -15,7 +15,7 @@ import Testimonials from "./sections/Testimonials";
 export default function App() {
 
   return (
-    <div className="relative gradient text-white">\
+    <div className="relative gradient text-white">
       <CustomCursor />
       <ParticlesBackground />
 
