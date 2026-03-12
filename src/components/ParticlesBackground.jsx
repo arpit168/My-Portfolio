@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-export default function ParticlesBackgroun() {
+export default function ParticlesBackground() {
     const CanvasRef = useRef(null);
 
     useEffect(() => {
