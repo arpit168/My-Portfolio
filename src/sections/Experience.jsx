@@ -10,22 +10,22 @@ const experiences = [
     company: "Brain Mentors",
     duration: "2022",
     description:
-      "Worked with team to build high-performance apps, integrated AI features, and improved engagement by 10%.",
+      "Worked with team to build high-performance web applications, integrated AI features, and improved engagement by 10%.",
   },
-  
+
   {
-    role: "Web Developer Intern",
-    company: "Mobisoft Technologies",
-    duration: "2022 - 2023",
+    role: "Web Development Learner",
+    company: "Self Learning",
+    duration: "2025 - Present",
     description:
-      "In this internship , I gained valuable hands on experience and exposure to various aspects of web development.",
+      "Learning modern web development technologies including HTML, CSS, JavaScript, React, and Node.js. Building personal projects to improve frontend and backend development skills."
   },
-{
-    role: "Graduate Engineer",
-    company: "HCL Technologies",
-    duration: "2024 - 2025",
+  {
+    role: "Aspiring Web Developer",
+    company: "Open to Internship",
+    duration: "2024 - Present",
     description:
-      "Built the frontend of a GenAI-powered PV Intake Application using Next.js and TypeScript for a U.S life sciences client, enabling automated patient report processing across global regions.",
+      "Actively building projects using React, Node.js, and JavaScript while improving problem-solving skills and preparing for web development internships."
   },
 
 
