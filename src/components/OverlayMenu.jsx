@@ -56,7 +56,7 @@ export default function OverlayMenu({ isOpen, onClose, hamburgerRef }) {
                     y: Math.random() * window.innerHeight,
                   }}
                   animate={{
-                    y: [null, -100, null],
+                    y: [null, -100, null], 
                     opacity: [0, 1, 0],
                   }}
                   transition={{
