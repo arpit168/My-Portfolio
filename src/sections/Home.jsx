@@ -1,471 +1,227 @@
+
 import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import avatar from "../assets/avator.png";
-import { 
-  FaGithub, 
-  FaLinkedinIn, 
-  FaTwitter, 
-  FaCode, 
-  FaTerminal,
-  FaBolt,
-  FaCrown,
-  FaRocket,
-  FaShieldAlt,
-  FaBrain
-} from "react-icons/fa";
-import { SiPython, SiReact, SiJavascript, SiTypescript, SiNodedotjs } from "react-icons/si";
-import { VscDebug } from "react-icons/vsc";
-import { MdOutlineSecurity } from "react-icons/md";
+import { FaXTwitter, FaLinkedinIn, FaGithub } from "react-icons/fa6";
+import { FaYoutube, FaInstagram } from "react-icons/fa6";
+import ParticleBackground from "../components/ParticlesBackground";
+
+const socials = [
+  { Icon: FaYoutube, label: "YouTube", href: "https://www.youtube.com/@ArpitGupta-qo2fg" },
+  { Icon: FaLinkedinIn, label: "LinkedIn", href: "https://www.linkedin.com/in/arpit-gupta-4a3343331/" },
+  { Icon: FaInstagram, label: "Instagram", href: "https://www.instagram.com/anokha_arpit/?hl=en" },
+  { Icon: FaGithub, label: "GitHub", href: "https://github.com/arpit168" },
+];
+
+
+const glowVariants = {
+  initial: { scale: 1, y: 0, filter: "drop-shadow(0 0 0 rgba(0,0,0,0))" },
+  hover: {
+    scale: 1.2,
+    y: -3,
+    filter:
+      "drop-shadow(0 0 8px rgba(13,88,204,0.9)) drop-shadow(0 0 18px rgba(16,185,129,0.8))",
+    transition: { type: "spring", stiffness: 300, damping: 15 },
+  },
+  tap: {
+    scale: 0.95,
+    y: 0,
+    transition: { duration: 0.08 },
+  },
+};
 
 const Home = React.forwardRef((props, ref) => {
   const roles = useMemo(
-    () => ["⚡ Software Engineer", "🔥 Full Stack Developer", "💻 Code Architect", "🚀 Tech Innovator"],
+    () => ["Software Developer", "Web Developer","UI/UX Designer"],
     []
   );
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [deleting, setDeleting] = useState(false);
-  const [glitchEffect, setGlitchEffect] = useState(false);
 
-  // Typing effect with glitch
+  // typing effect logic
   useEffect(() => {
     const current = roles[index];
     const timeout = setTimeout(() => {
-      if (!deleting && subIndex < current.length) {
-        setSubIndex((v) => v + 1);
-        if (Math.random() > 0.9) setGlitchEffect(true);
-        setTimeout(() => setGlitchEffect(false), 100);
-      } else if (!deleting && subIndex === current.length) {
-        setTimeout(() => setDeleting(true), 2000);
-      } else if (deleting && subIndex > 0) {
-        setSubIndex((v) => v - 1);
-      } else if (deleting && subIndex === 0) {
+      if (!deleting && subIndex < current.length) setSubIndex((v) => v + 1);
+      else if (!deleting && subIndex === current.length)
+        setTimeout(() => setDeleting(true), 1200);
+      else if (deleting && subIndex > 0) setSubIndex((v) => v - 1);
+      else if (deleting && subIndex === 0) {
         setDeleting(false);
         setIndex((p) => (p + 1) % roles.length);
       }
-    }, deleting ? 30 : 80);
-    
+    }, deleting ? 40 : 60); // original typing speed
     return () => clearTimeout(timeout);
   }, [subIndex, deleting, index, roles]);
-
-  // Matrix rain effect (simplified)
-  const matrixChars = "10 01 11 00 101 010 110 001".split(" ");
 
   return (
     <section
       ref={ref}
       id="home"
-      className="relative min-h-screen w-full bg-black text-white overflow-hidden"
+      className="h-screen w-full relative overflow-hidden bg-black"
     >
-      {/* Cyber Grid Background */}
+      <ParticleBackground />
+
+      {/* linear blobs */}
       <div className="absolute inset-0">
-        {/* Main grid */}
-        <div className="absolute inset-0" style={{
-          backgroundImage: `
-            linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px)
-          `,
-          backgroundSize: '50px 50px'
-        }} />
-        
-        {/* Animated grid lines */}
-        <motion.div
-          className="absolute inset-0"
-          animate={{
-            backgroundPosition: ['0px 0px', '50px 50px'],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0, 255, 255, 0.1) 2px, transparent 2px),
-              linear-gradient(90deg, rgba(0, 255, 255, 0.1) 2px, transparent 2px)
-            `,
-            backgroundSize: '100px 100px',
-            opacity: 0.3
-          }}
+        <div
+          className="absolute -top-32 -left-32 
+          w-[70vw] sm:w-[50vw] md:w-[40vw] 
+          h-[70vw] sm:h-[50vw] md:h-[40vw]
+          max-w-125 max-h-125
+          rounded-full
+          bg-linear-to-r from-[#302b63] via-[#00bf8f] to-[#1CD8D2]
+          opacity-30 sm:opacity-20 md:opacity-10 
+          blur-[100px] sm:blur-[130px] md:blur-[150px]
+          animate-pulse"
         />
-
-        {/* Matrix rain effect */}
-        <div className="absolute inset-0 overflow-hidden opacity-20">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute text-cyan-500/30 text-xs font-mono"
-              style={{
-                left: `${i * 5}%`,
-                top: '-20%',
-                writingMode: 'vertical-rl'
-              }}
-              animate={{
-                y: ['0vh', '120vh'],
-              }}
-              transition={{
-                duration: 10 + Math.random() * 10,
-                repeat: Infinity,
-                ease: "linear",
-                delay: Math.random() * 5
-              }}
-            >
-              {matrixChars.map((char, idx) => (
-                <span key={idx} className="block">{char}</span>
-              ))}
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Glitch overlays */}
-        <motion.div
-          className="absolute inset-0 bg-cyan-500/10"
-          animate={{
-            opacity: glitchEffect ? [0, 0.3, 0] : 0,
-            x: glitchEffect ? [-5, 5, -5, 0] : 0,
-          }}
-          transition={{ duration: 0.2 }}
-        />
-        <motion.div
-          className="absolute inset-0 bg-fuchsia-500/10"
-          animate={{
-            opacity: glitchEffect ? [0, 0.3, 0] : 0,
-            x: glitchEffect ? [5, -5, 5, 0] : 0,
-          }}
-          transition={{ duration: 0.2 }}
+        <div
+          className="absolute bottom-0 right-0 
+          w-[70vw] sm:w-[50vw] md:w-[40vw] 
+          h-[70vw] sm:h-[50vw] md:h-[40vw] 
+          max-w-125 max-h-125 
+          rounded-full 
+          bg-linear-to-r from-[#1CD8D2] via-[#00bf8f] to-[#302b63] 
+          opacity-40 sm:opacity-30 
+          blur-[100px] sm:blur-[130px] md:blur-[150px] 
+          animate-pulse delay-500"
         />
       </div>
 
-      {/* Floating Code Snippets */}
-      <div className="absolute inset-0 pointer-events-none">
-        {[
-          { Icon: SiReact, top: '10%', left: '5%', color: '#61DAFB', delay: 0 },
-          { Icon: SiPython, top: '20%', right: '10%', color: '#3776AB', delay: 1 },
-          { Icon: SiJavascript, bottom: '15%', left: '8%', color: '#F7DF1E', delay: 2 },
-          { Icon: SiTypescript, bottom: '25%', right: '15%', color: '#3178C6', delay: 1.5 },
-          { Icon: SiNodedotjs, top: '40%', left: '12%', color: '#339933', delay: 0.5 },
-        ].map(({ Icon, color, delay, ...position }, i) => (
-          <motion.div
-            key={i}
-            className="absolute text-4xl md:text-5xl"
-            style={{ ...position, color: `${color}20` }}
-            animate={{
-              y: [-20, 20, -20],
-              rotate: [0, 10, -10, 0],
-              opacity: [0.3, 0.6, 0.3],
-            }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              delay,
-              ease: "easeInOut"
-            }}
-          >
-            <Icon />
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Main Content */}
-      <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center min-h-screen">
-        <div className="w-full grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
-            {/* Status Badge */}
+      <div className="relative z-10 h-full w-full max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2">
+        {/* left */}
+        <motion.div
+          className="flex flex-col justify-center h-full text-center lg:text-left relative"
+          initial={{ opacity: 0, y: 120 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        >
+          <div className="w-full lg:pr-24 mx-auto max-w-7xl">
+            {/* typing text */}
             <motion.div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/50 border border-cyan-500/30 backdrop-blur-sm mb-6"
-              whileHover={{ scale: 1.05, borderColor: '#00ffff' }}
+              className="mb-3 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-white tracking-wide min-h-[1.6em]"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
             >
-              <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
-              </span>
-              <span className="text-cyan-400 font-mono text-sm">STATUS: ONLINE</span>
-              <FaTerminal className="text-cyan-400 ml-2" />
+              <span>{roles[index].substring(0, subIndex)}</span>
+              <span
+                className="inline-block w-0.5 ml-1 bg-white animate-pulse align-middle"
+                style={{ height: "1em" }}
+              />
             </motion.div>
 
-            {/* Code Comment */}
-            <motion.div
-              className="font-mono text-gray-500 mb-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              &lt;!-- SYSTEM INITIALIZED --&gt;
-            </motion.div>
-
-            {/* Name with glitch effect */}
+            {/* name */}
             <motion.h1
-              className="relative text-5xl sm:text-6xl md:text-7xl font-black mb-4"
-              animate={glitchEffect ? {
-                x: [-5, 5, -5, 0],
-                skewX: [0, 5, -5, 0],
-              } : {}}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text 
+              bg-linear-to-r from-[#1CD8D2] via-[#00bf8f] to-[#302b63] drop-shadow-lg"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 1 }}
             >
-              <span className="relative inline-block">
-                <span className="absolute inset-0 text-cyan-500/50 blur-sm animate-pulse">
-                  Arpit Gupta
-                </span>
-                <span className="absolute inset-0 text-fuchsia-500/50 blur-sm animate-pulse delay-75">
-                  Arpit Gupta
-                </span>
-                <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500">
-                  Arpit Gupta
-                </span>
+              Hello, I&apos;m
+              <br />
+              <span className="text-white font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl lg:whitespace-nowrap">
+                Arpit Gupta
               </span>
             </motion.h1>
 
-            {/* Dynamic Role with Terminal Style */}
-            <motion.div
-              className="font-mono text-xl sm:text-2xl mb-6 p-4 bg-black/50 border border-cyan-500/30 rounded-lg backdrop-blur-sm"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <span className="text-cyan-400">$</span>{" "}
-              <span className="text-green-400">./skills --display</span>
-              <br />
-              <span className="text-gray-400">{`>`}</span>{" "}
-              <span className={glitchEffect ? 'glitch-text' : ''}>
-                {roles[index].substring(0, subIndex)}
-              </span>
-              <motion.span
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity }}
-                className="ml-1 text-cyan-400"
-              >
-                _
-              </motion.span>
-            </motion.div>
-
-            {/* Description with Tech Stack */}
+            {/* description */}
             <motion.p
-              className="text-gray-300 max-w-lg mb-6 leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
+              className="mt-6 text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto lg:mx-0"
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
             >
-              <span className="text-cyan-400">&lt;p&gt;</span><br />
-              &nbsp;&nbsp;Building high-performance, scalable applications with 
-              <span className="text-cyan-400"> enterprise-grade architecture</span> and 
-              <span className="text-fuchsia-400"> cutting-edge technologies</span>.
-              <br />
-              <span className="text-cyan-400">&lt;/p&gt;</span>
+              I turn complex ideas into seamless, high-impact web experiences —
+              building modern, scalable, and lightning-fast applications that
+              make a difference.
             </motion.p>
 
-            {/* Tech Stack Pills */}
+            {/* buttons */}
             <motion.div
-              className="flex flex-wrap gap-2 mb-8"
-              initial={{ opacity: 0, y: 20 }}
+              className="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-6"
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
+              transition={{ delay: 1.1, duration: 0.8 }}
             >
-              {['React', 'Node.js', 'Python', 'TypeScript', 'AWS', 'Docker'].map((tech, i) => (
-                <motion.span
-                  key={tech}
-                  className="px-3 py-1 text-sm font-mono border border-cyan-500/30 rounded-full text-cyan-400 bg-black/50 backdrop-blur-sm"
-                  whileHover={{ scale: 1.1, borderColor: '#00ffff', boxShadow: '0 0 15px #00ffff' }}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7 + i * 0.1 }}
-                >
-                  &lt;{tech} /&gt;
-                </motion.span>
-              ))}
-            </motion.div>
-
-            {/* Action Buttons */}
-            <motion.div
-              className="flex flex-wrap gap-4 mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-            >
-              <motion.a
+              <a
                 href="#projects"
-                className="group relative px-8 py-4 rounded-lg font-mono text-lg overflow-hidden"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 rounded-full text-lg font-medium text-white 
+                bg-linear-to-r from-[#1CD8D2] via-[#00bf8f] to-[#302b63]
+                shadow-lg hover:scale-105 transition-all"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600" />
-                <span className="absolute inset-0 bg-gradient-to-r from-fuchsia-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="relative flex items-center gap-2 text-white">
-                  <FaCode /> ./deploy --projects
-                </span>
-              </motion.a>
-              
-              <motion.a
-                href="#contact"
-                className="group relative px-8 py-4 rounded-lg font-mono text-lg border border-cyan-500/30 hover:border-cyan-400 overflow-hidden"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                View My Work
+              </a>
+              <a
+                href="/Resume.pdf"
+                download
+                className="px-6 py-3 rounded-full text-lg font-medium text-black bg-white 
+                hover:bg-gray-200 shadow-lg hover:scale-105 transition-all"
               >
-                <span className="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <span className="relative flex items-center gap-2 text-cyan-400">
-                  <FaTerminal /> ./connect --social
-                </span>
-              </motion.a>
+                My Resume
+              </a>
             </motion.div>
 
-            {/* Social Links */}
+            {/* socials */}
             <motion.div
-              className="flex gap-4"
-              initial={{ opacity: 0, y: 20 }}
+              className="mt-10 flex gap-5 text-2xl md:text-3xl justify-center lg:justify-start"
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9 }}
+              transition={{ delay: 1.4, duration: 0.8 }}
             >
-              {[
-                { Icon: FaGithub, href: "#", color: "#fff" },
-                { Icon: FaLinkedinIn, href: "#", color: "#0077B5" },
-                { Icon: FaTwitter, href: "#", color: "#1DA1F2" },
-                { Icon: VscDebug, href: "#", color: "#00ffff" },
-              ].map(({ Icon, href, color }, i) => (
+              {socials.map(({ Icon, label, href }) => (
                 <motion.a
-                  key={i}
+                  key={label}
                   href={href}
+                  aria-label={label}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="relative group"
-                  whileHover={{ y: -5 }}
-                  whileTap={{ scale: 0.9 }}
+                  variants={glowVariants}
+                  initial="initial"
+                  whileHover="hover"
+                  whileTap="tap"
+                  className="text-gray-300"
                 >
-                  <div className="absolute inset-0 rounded-full bg-cyan-500/20 blur-lg group-hover:blur-xl transition-all" />
-                  <div className="relative p-3 rounded-full border border-cyan-500/30 bg-black/50 backdrop-blur-sm group-hover:border-cyan-400 transition-all">
-                    <Icon style={{ color }} className="w-5 h-5" />
-                  </div>
+                  <Icon />
                 </motion.a>
               ))}
             </motion.div>
-          </motion.div>
+          </div>
+        </motion.div>
 
-          {/* Right Content - Avatar with Cyber Elements */}
-          <motion.div
-            className="relative hidden lg:flex justify-center items-center"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
-            {/* Rotating Cyber Rings */}
-            <div className="relative w-[500px] h-[500px]">
-              {/* Outer Ring */}
-              <motion.div
-                className="absolute inset-0 rounded-full border-2 border-cyan-500/30"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              >
-                {[...Array(8)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute w-3 h-3 bg-cyan-400 rounded-full"
-                    style={{
-                      top: '0%',
-                      left: '50%',
-                      transform: `rotate(${i * 45}deg) translateY(-250px)`,
-                    }}
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.25 }}
-                  />
-                ))}
-              </motion.div>
-
-              {/* Middle Ring */}
-              <motion.div
-                className="absolute inset-[50px] rounded-full border border-fuchsia-500/30"
-                animate={{ rotate: -360 }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-              />
-
-              {/* Inner Ring */}
-              <motion.div
-                className="absolute inset-[100px] rounded-full border border-blue-500/30"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-              />
-
-              {/* Avatar with Cyber Overlay */}
-              <div className="absolute inset-[150px]">
-                {/* Glitch effect overlay */}
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-500 opacity-30 blur-xl"
-                  animate={{
-                    scale: [1, 1.1, 1],
-                    opacity: [0.3, 0.5, 0.3],
-                  }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                />
-                
-                {/* Avatar */}
-                <img
-                  src={avatar}
-                  alt="Arpit Gupta"
-                  className="relative w-full h-full object-contain rounded-full border-2 border-cyan-500/50"
-                />
-
-                {/* Scanning line effect */}
-                <motion.div
-                  className="absolute inset-0 rounded-full overflow-hidden"
-                  initial={false}
-                >
-                  <motion.div
-                    className="w-full h-20 bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent"
-                    animate={{ y: [-200, 400] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                  />
-                </motion.div>
-              </div>
-
-              {/* Floating Power Stats */}
-              {[
-                { icon: FaBolt, value: '99.9%', label: 'Uptime', top: '10%', right: '0' },
-                { icon: FaShieldAlt, value: 'A+', label: 'Security', bottom: '10%', left: '0' },
-                { icon: FaBrain, value: 'AI', label: 'Integrated', top: '40%', left: '-20px' },
-                { icon: FaRocket, value: '10x', label: 'Speed', bottom: '40%', right: '-20px' },
-              ].map((stat, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute bg-black/80 border border-cyan-500/30 rounded-lg p-3 backdrop-blur-sm"
-                  style={{ top: stat.top, bottom: stat.bottom, left: stat.left, right: stat.right }}
-                  whileHover={{ scale: 1.1, borderColor: '#00ffff' }}
-                  animate={{ y: [-5, 5, -5] }}
-                  transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
-                >
-                  <stat.icon className="text-cyan-400 text-xl mb-1" />
-                  <div className="text-white font-bold text-sm">{stat.value}</div>
-                  <div className="text-gray-500 text-xs">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+        {/* right */}
+        <motion.div
+          className="relative hidden lg:block"
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7, duration: 1 }}
+        >
+          <div
+            className="absolute top-1/2 -translate-y-1/2 pointer-events-none"
+            style={{
+              right: "10px",
+              width: "min(22vw, 410px)",
+              height: "min(40vw, 760px)",
+              borderRadius: "50%",
+              filter: "blur(38px)",
+              opacity: 0.32,
+              background:
+                "conic-linear(from 0deg, #1CD8D2, #00bf8f, #302b63, #1CD8D2)",
+            }}
+          />
+          <motion.img
+            src={avatar}
+            alt="Arpit Gupta avatar"
+            className="absolute top-1/2 -translate-y-1/2 object-contain select-none pointer-events-none"
+            style={{ right: "-30px", width: "min(45vw, 780px)", maxHeight: "90vh" }}
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 1, duration: 1 }}
+          />
+        </motion.div>
       </div>
-
-      {/* Bottom Status Bar */}
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 h-8 bg-black/80 border-t border-cyan-500/30 backdrop-blur-sm"
-        initial={{ y: 100 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 1.5 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between text-xs font-mono">
-          <div className="flex items-center gap-4">
-            <span className="text-cyan-400">SYSTEM READY</span>
-            <span className="text-gray-600">|</span>
-            <span className="text-green-400">CPU: 23%</span>
-            <span className="text-gray-600">|</span>
-            <span className="text-blue-400">MEM: 1.2GB/8GB</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-fuchsia-400">v2.0.1</span>
-            <span className="text-gray-600">|</span>
-            <span className="text-cyan-400">PORTFOLIO_v2</span>
-          </div>
-        </div>
-      </motion.div>
     </section>
   );
 });
