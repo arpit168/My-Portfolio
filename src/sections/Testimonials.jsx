@@ -17,31 +17,31 @@ const MDiv = motion.div; // Animated <div> tag
 // Array containing all testimonial data (name, role, review, image)
 const testimonials = [
   {
-    name: "Yash Sahu",
-    role: "Software Engineer at HCL Technologies",
+    name: "Michael Chen",
+    role: "Lead Developer at TechStart Solutions",
     review:
-      "Arpit is a visionary developer. His attention to detail and creativity blew us away. Our project was a massive success because of him.",
+      "An exceptional developer with remarkable problem-solving abilities. The code quality and architecture decisions were outstanding throughout the project.",
     image: m1, // Points to imported image
   },
   {
-    name: "Heather Forster",
-    role: "UI/UX Designer at PixelWorks",
+    name: "Sarah Williams",
+    role: "Product Manager at CreativeMinds",
     review:
-      "Working with Arpit was an absolute pleasure. He brings design and code together like magic. Highly recommend him!",
+      "Absolutely brilliant to work with! Brought innovative ideas to the table and delivered beyond our expectations. A true asset to any team.",
     image: w1,
   },
   {
-    name: "Amy Jacobsan",
-    role: "Tech Manager at CodeEmpire",
+    name: "David Rodriguez",
+    role: "Founder of NextGen Apps",
     review:
-      "From concept to execution, Arpit handled everything flawlessly. His work ethic and innovation are unmatched.",
+      "Transformed our vision into reality with elegant solutions. The attention to detail and commitment to excellence is rare to find.",
     image: m2,
   },
   {
-    name: "Carry Smith",
-    role: "CTO at Innovate Labs",
+    name: "Jennifer Lee",
+    role: "Creative Director at DesignHub",
     review:
-      "Arpit transformed our outdated platform into something modern and powerful. His skills are world-class.",
+      "One of the most talented professionals I've collaborated with. The work produced was not just functional but beautifully crafted.",
     image: w2,
   },
 ];
@@ -52,7 +52,7 @@ function Testimonials() {
     // Section wrapper with styling
     <section
       id="testimonials" // ID for navigation
-      className="relative min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-20"
+      className="relative min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-20 "
       // Makes this section full-screen height, black background, white text, centered content
     >
       {/* Animated Section Title */}

@@ -210,7 +210,7 @@ export default function Contact() {
           <div className="relative bg-linear-to-br from-gray-900/90 to-black/90 backdrop-blur-xl rounded-3xl border border-white/10 p-8 md:p-12">
             
             {/* Tabs */}
-            <div className="flex gap-4 mb-10 border-b border-white/10 pb-4">
+            <div className="grid md:grid-cols-4 grid-cols-1 gap-4 mb-10 border-b border-white/10 pb-4">
               {[
                 { id: "project", label: "New Project", icon: "🚀" },
                 { id: "collab", label: "Collaboration", icon: "🤝" },
