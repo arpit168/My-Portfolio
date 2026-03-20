@@ -21,7 +21,7 @@ const experiences = [
       "Learning modern web development technologies including HTML, CSS, JavaScript, React, and Node.js. Building personal projects to improve frontend and backend development skills."
   },
   {
-    role: "Aspiring Web Developer",
+    role: " Aspiring Web Developer",
     company: "Open to Internship",
     duration: "2024 - Present",
     description:
@@ -128,7 +128,7 @@ const Experience = () => {
   const lineHeight = useTransform(scrollYProgress, (v) => `${v * 100}%`);
 
   return (
-    <section id="experience" className="relative bg-black text-white">
+    <section id="experience" className="relative bg-black text-white ">
       {/* Main container with dynamic height */}
       <div ref={sceneRef} style={{ height: `${SCENE_HEIGHT_VH}vh`, minHeight: "120vh" }} className="relative">
         <div className="sticky top-0 h-screen flex flex-col">
