@@ -89,10 +89,10 @@ const Home = React.forwardRef((props, ref) => {
         />
       </div>
 
-      <div className="relative z-10 h-full w-full max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2">
+      <div className="relative z-10 h-full w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
         {/* left */}
         <motion.div
-          className="flex flex-col justify-center h-full text-center lg:text-left relative"
+          className="flex flex-col justify-center h-full text-center lg:text-left relative py-8 lg:py-0"
           initial={{ opacity: 0, y: 120 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
@@ -141,14 +141,14 @@ const Home = React.forwardRef((props, ref) => {
 
             {/* buttons */}
             <motion.div
-              className="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-6"
+              className="mt-8 sm:mt-10 flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6"
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.1, duration: 0.8 }}
             >
               <a
                 href="#projects"
-                className="px-6 py-3 rounded-full text-lg font-medium text-white 
+                className="w-full sm:w-auto px-6 py-3 rounded-full text-base sm:text-lg font-medium text-white text-center
                 bg-linear-to-r from-[#1CD8D2] via-[#00bf8f] to-[#302b63]
                 shadow-lg hover:scale-105 transition-all"
               >
@@ -157,7 +157,7 @@ const Home = React.forwardRef((props, ref) => {
               <a
                 href="/Resume.pdf"
                 download
-                className="px-6 py-3 rounded-full text-lg font-medium text-black bg-white 
+                className="w-full sm:w-auto px-6 py-3 rounded-full text-base sm:text-lg font-medium text-black bg-white text-center
                 hover:bg-gray-200 shadow-lg hover:scale-105 transition-all"
               >
                 My Resume

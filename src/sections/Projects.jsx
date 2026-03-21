@@ -116,12 +116,12 @@ export default function Projects() {
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center">
         
         {/* Section Title */}
-        <h2 className={`text-3xl font-semibold z-10 text-center ${isMobile ? "mt-4" : "mt-8"}`}>
+        <h2 className={`text-2xl sm:text-3xl font-semibold z-10 text-center px-4 ${isMobile ? "mt-4" : "mt-8"}`}>
           My Work 
         </h2>
 
         {/* Main Project Display Area */}
-        <div className={`relative w-full flex-1 flex items-center justify-center ${isMobile ? "-mt-4" : ""}`}>
+        <div className={`relative w-full flex-1 flex items-center justify-center px-4 ${isMobile ? "-mt-4" : ""}`}>
           {projects.map((project, idx) => (
             <div
               key={project.title}

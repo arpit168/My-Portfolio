@@ -133,11 +133,11 @@ const Experience = () => {
       <div ref={sceneRef} style={{ height: `${SCENE_HEIGHT_VH}vh`, minHeight: "120vh" }} className="relative">
         <div className="sticky top-0 h-screen flex flex-col">
           {/* Section Title */}
-          <div className="shrink-0 px-6 pt-8">
-            <h2 className="text-4xl sm:text-5xl font-semibold mt-5 text-center">Experience</h2>
+          <div className="shrink-0 px-4 sm:px-6 pt-6 sm:pt-8">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mt-3 sm:mt-5 text-center">Experience</h2>
           </div>
           {/* Timeline container */}
-          <div className="flex-1 flex items-center justify-center px-6 pb-10">
+          <div className="flex-1 flex items-center justify-center px-4 sm:px-6 pb-8 sm:pb-10">
             {/* Desktop Timeline */}
             <div className="relative w-full max-w-7xl hidden md:block">
               {/* Horizontal timeline line */}

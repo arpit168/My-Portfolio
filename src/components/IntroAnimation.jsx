@@ -63,7 +63,8 @@ export default function IntroAnimation({ onFinish }) {
     >
       <h1
         ref={greetingRef}
-        className="text-5xl md:text-7xl lg:text-8xl font-bold absolute z-20"
+        className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold absolute z-20 px-4 text-center"
+        style={{ fontSize: "clamp(2rem, 10vw, 8rem)" }}
       >
         {greetings[index]}
       </h1>

@@ -110,8 +110,8 @@ export default function Contact() {
 
       {/* Main Container */}
       <div className="relative z-10 w-full max-w-7xl">
-        {/* Header Section - Split Design */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            {/* Header Section - Split Design */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-16">
           {/* Left Side - Bold Title */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -123,26 +123,26 @@ export default function Contact() {
               <motion.div
                 animate={{ rotate: [0, 5, -5, 0] }}
                 transition={{ duration: 6, repeat: Infinity }}
-                className="inline-block mb-6"
+                className="inline-block mb-4 sm:mb-6"
               >
-                <span className="text-8xl">👋</span>
+                <span className="text-5xl sm:text-7xl lg:text-8xl">👋</span>
               </motion.div>
               
-              <h2 className="text-7xl md:text-8xl font-black leading-none">
+              <h2 className="text-4xl sm:text-5xl lg:text-7xl xl:text-8xl font-black leading-none">
                 <span className="text-white">LET'S</span>
                 <br />
-                <span className="bg-linear-to-r from-yellow-400 via-orange-500 to-red-500 text-transparent bg-clip-text">
+                <span className="bg-linear-to-r from-yellow-400 via-orange-500 to-red-500 text-transparent bg-clip-text text-4xl sm:text-5xl lg:text-7xl xl:text-8xl">
                   CONNECT
                 </span>
               </h2>
               
-              <p className="text-gray-400 text-lg mt-8 max-w-md">
+              <p className="text-gray-400 text-base sm:text-lg mt-6 sm:mt-8 max-w-md">
                 Got a wild idea? A project that needs some magic? 
                 <span className="text-white font-bold"> I'm all ears.</span>
               </p>
 
               {/* Stats */}
-              <div className="flex gap-8 mt-12">
+              <div className="flex gap-6 sm:gap-8 mt-8 sm:mt-12">
                 {[
                   { number: "24h", label: "Response Time" },
                   { number: "100+", label: "Projects" },
@@ -207,10 +207,10 @@ export default function Contact() {
           {/* Background Card */}
           <div className="absolute inset-0 bg-linear-to-r from-yellow-400/20 via-orange-500/20 to-red-500/20 rounded-3xl blur-3xl"></div>
           
-          <div className="relative bg-linear-to-br from-gray-900/90 to-black/90 backdrop-blur-xl rounded-3xl border border-white/10 p-8 md:p-12">
+          <div className="relative bg-linear-to-br from-gray-900/90 to-black/90 backdrop-blur-xl rounded-3xl border border-white/10 p-6 sm:p-8 md:p-12">
             
             {/* Tabs */}
-            <div className="grid md:grid-cols-4 grid-cols-1 gap-4 mb-10 border-b border-white/10 pb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-2 sm:gap-4 mb-8 sm:mb-10 border-b border-white/10 pb-4">
               {[
                 { id: "project", label: "New Project", icon: "🚀" },
                 { id: "collab", label: "Collaboration", icon: "🤝" },
@@ -221,24 +221,25 @@ export default function Contact() {
                   onClick={() => setActiveTab(tab.id)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`px-6 py-3 rounded-full text-sm font-medium transition-all ${
+                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-medium transition-all ${
                     activeTab === tab.id
                       ? "bg-linear-to-r from-yellow-400 to-orange-500 text-black"
                       : "bg-white/5 text-gray-400 hover:text-white"
                   }`}
                 >
-                  <span className="mr-2">{tab.icon}</span>
-                  {tab.label}
+                  <span className="mr-1 sm:mr-2">{tab.icon}</span>
+                  <span className="hidden sm:inline">{tab.label}</span>
+                  <span className="sm:hidden">{tab.icon}</span>
                 </motion.button>
               ))}
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
               {/* Two Column Layout */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 {/* Name Field */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-400">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-400">
                     YOUR NAME <span className="text-orange-500">*</span>
                   </label>
                   <input
@@ -247,7 +248,7 @@ export default function Contact() {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="e.g., John Doe"
-                    className="w-full px-6 py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-gray-600 focus:border-orange-500 focus:outline-none transition-all"
+                    className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-sm sm:text-base text-white placeholder-gray-600 focus:border-orange-500 focus:outline-none transition-all"
                   />
                   {errors.name && (
                     <p className="text-orange-500 text-xs mt-1">{errors.name}</p>
@@ -256,7 +257,7 @@ export default function Contact() {
 
                 {/* Email Field */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-400">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-400">
                     EMAIL <span className="text-orange-500">*</span>
                   </label>
                   <input
@@ -265,7 +266,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="hello@domain.com"
-                    className="w-full px-6 py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-gray-600 focus:border-orange-500 focus:outline-none transition-all"
+                    className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-sm sm:text-base text-white placeholder-gray-600 focus:border-orange-500 focus:outline-none transition-all"
                   />
                   {errors.email && (
                     <p className="text-orange-500 text-xs mt-1">{errors.email}</p>
@@ -275,11 +276,11 @@ export default function Contact() {
 
               {/* Service Selection - Creative Card Style */}
               <div className="space-y-4">
-                <label className="block text-sm font-medium text-gray-400">
+                <label className="block text-xs sm:text-sm font-medium text-gray-400">
                   WHAT DO YOU NEED? <span className="text-orange-500">*</span>
                 </label>
                 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
                   {services.map((service) => (
                     <motion.button
                       key={service.id}
@@ -287,14 +288,14 @@ export default function Contact() {
                       whileHover={{ scale: 1.05, y: -5 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => setFormData({...formData, service: service.label})}
-                      className={`relative p-6 rounded-2xl border-2 transition-all ${
+                      className={`relative p-3 sm:p-6 rounded-xl sm:rounded-2xl border-2 transition-all ${
                         formData.service === service.label
                           ? `bg-linear-to-r ${service.color} border-transparent`
                           : 'bg-white/5 border-white/10 hover:border-white/30'
                       }`}
                     >
-                      <div className="text-3xl mb-2">{service.icon}</div>
-                      <div className={`text-sm font-medium ${
+                      <div className="text-2xl sm:text-3xl mb-1 sm:mb-2">{service.icon}</div>
+                      <div className={`text-xs sm:text-sm font-medium ${
                         formData.service === service.label ? 'text-white' : 'text-gray-400'
                       }`}>
                         {service.label}
@@ -315,7 +316,7 @@ export default function Contact() {
                   animate={{ opacity: 1, y: 0 }}
                   className="space-y-4"
                 >
-                  <label className="block text-sm font-medium text-gray-400">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-400">
                     BUDGET RANGE (USD) <span className="text-orange-500">*</span>
                   </label>
                   
@@ -326,9 +327,9 @@ export default function Contact() {
                       value={formData.budget}
                       onChange={handleChange}
                       placeholder="Enter your budget"
-                      className="w-full px-6 py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-gray-600 focus:border-orange-500 focus:outline-none transition-all"
+                      className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-sm sm:text-base text-white placeholder-gray-600 focus:border-orange-500 focus:outline-none transition-all"
                     />
-                    <span className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                    <span className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-gray-500">$</span>
                   </div>
                   
                   {errors.budget && (
@@ -339,16 +340,16 @@ export default function Contact() {
 
               {/* Idea Field - Big Textarea */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-400">
+                <label className="block text-xs sm:text-sm font-medium text-gray-400">
                   YOUR IDEA <span className="text-orange-500">*</span>
                 </label>
                 <textarea
                   name="idea"
-                  rows={5}
+                  rows={4}
                   value={formData.idea}
                   onChange={handleChange}
                   placeholder="Tell me everything... The more details, the better!"
-                  className="w-full px-6 py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-gray-600 focus:border-orange-500 focus:outline-none transition-all resize-none"
+                  className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-sm sm:text-base text-white placeholder-gray-600 focus:border-orange-500 focus:outline-none transition-all resize-none"
                 />
                 {errors.idea && (
                   <p className="text-orange-500 text-xs">{errors.idea}</p>
@@ -361,24 +362,25 @@ export default function Contact() {
               </div>
 
               {/* Submit Area */}
-              <div className="flex flex-col md:flex-row items-center gap-6 pt-6">
+              <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 pt-4 sm:pt-6">
                 {/* Submit Button */}
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   disabled={status === "sending"}
                   type="submit"
-                  className="relative group w-full md:w-auto"
+                  className="relative group w-full sm:w-auto"
                 >
                   {/* Button Background */}
                   <div className="absolute inset-0 bg-linear-to-r from-yellow-400 to-orange-500 rounded-2xl opacity-80 group-hover:opacity-100 transition-opacity"></div>
                   
                   {/* Button Content */}
-                  <div className="relative px-12 py-5 text-black font-bold text-lg rounded-2xl flex items-center gap-3">
+                  <div className="relative px-8 sm:px-12 py-4 sm:py-5 text-black font-bold text-base sm:text-lg rounded-2xl flex items-center justify-center sm:justify-start gap-3">
                     {status === "sending" ? (
                       <>
-                        <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>
-                        <span>SENDING...</span>
+                        <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>
+                        <span className="hidden sm:inline">SENDING...</span>
+                        <span className="sm:hidden">...</span>
                       </>
                     ) : (
                       <>
