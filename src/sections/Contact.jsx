@@ -1,438 +1,418 @@
-// Importing React's useState hook for managing component state
-import { useState } from "react";
+// Importing React for building UI components
+import React, { useState, useRef, useEffect } from "react";
+// Importing motion components and scroll hooks from Framer Motion for animations
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
 
-// Importing motion component from Framer Motion for animations
-import { motion, AnimatePresence } from "framer-motion";
-
-// Importing EmailJS SDK
-import emailjs from "@emailjs/browser";
-
-// Importing Particles Background (same as Home component)
-import ParticlesBackground from "../components/ParticlesBackground.jsx";
-
-// Importing the contact image asset
-import Astra from "../assets/Astra.png";
-
-// Reading EmailJS credentials from environment variables (Vite)
-const SERVICE_ID = import.meta.env.VITE_SERVICE_ID;
-const TEMPLATE_ID = import.meta.env.VITE_TEMPLATE_ID;
-const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY;
-
-export default function Contact() {
+// Contact page component with attractive design and animations
+const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    service: "",
-    budget: "",
-    idea: "",
+    subject: "",
+    message: ""
   });
-
-  const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState("");
-  const [activeTab, setActiveTab] = useState("project");
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
+  const [isMobile, setIsMobile] = useState(false);
+  
+  const sectionRef = useRef(null);
+  const formRef = useRef(null);
+  const isFormInView = useInView(formRef, { once: false, amount: 0.3 });
+  
+  // Scroll progress for parallax effects
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+  
+  // Parallax transforms for background elements
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
+  
+  // Detect mobile screen
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+  
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    if (name === "budget" && value && !/^\d+$/.test(value)) return;
-
-    setFormData((p) => ({ ...p, [name]: value }));
-
-    if (errors[name]) setErrors((p) => ({ ...p, [name]: "" }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
-
-  const validateForm = () => {
-    const required = ["name", "email", "service", "idea"];
-    const newErrors = {};
-
-    required.forEach(
-      (f) => !formData[f].trim() && (newErrors[f] = "Fill this field")
-    );
-
-    if (formData.service && formData.service !== "other" && !formData.budget.trim())
-      newErrors.budget = "Fill this field";
-
-    setErrors(newErrors);
-    return !Object.keys(newErrors).length;
-  };
-
+  
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) return;
-
-    setStatus("sending");
-
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    
+    // Simulate API call (replace with actual endpoint)
     try {
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        {
-          ...formData,
-          from_name: formData.name,
-          reply_to: formData.email,
-        },
-        PUBLIC_KEY
-      );
-
-      setStatus("success");
-      setFormData({name: "",email: "",service: "",budget: "",idea: ""});
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
-      setTimeout(() => setStatus(""), 5000);
-    } catch (err) {
-      console.error("EmailJS Error:", err);
-      setStatus("error");
-      setTimeout(() => setStatus(""), 5000);
+      // Here you would typically send data to your backend
+      // Example: await fetch('/api/contact', { method: 'POST', body: JSON.stringify(formData) });
+      
+      console.log("Form submitted:", formData);
+      setSubmitStatus("success");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+      
+      // Auto-hide success message after 5 seconds
+      setTimeout(() => setSubmitStatus(null), 5000);
+    } catch (error) {
+      setSubmitStatus("error");
+      setTimeout(() => setSubmitStatus(null), 5000);
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
-  const services = [
-    { id: "web", label: "Web Dev", icon: "🌐", color: "from-blue-500 to-cyan-500" },
-    { id: "mobile", label: "Mobile", icon: "📱", color: "from-purple-500 to-pink-500" },
-    { id: "design", label: "UI/UX", icon: "🎨", color: "from-orange-500 to-red-500" },
-    { id: "brand", label: "Branding", icon: "✨", color: "from-green-500 to-emerald-500" },
+  
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" }
+    }
+  };
+  
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.95, y: 50 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: "easeOut" }
+    }
+  };
+  
+  // Contact methods data
+  const contactMethods = [
+    {
+      icon: "fas fa-envelope",
+      title: "Email",
+      info: "hello@example.com",
+      link: "mailto:hello@example.com",
+      linear: "from-blue-500/20 to-cyan-500/20"
+    },
+    {
+      icon: "fab fa-linkedin",
+      title: "LinkedIn",
+      info: "linkedin.com/in/username",
+      link: "https://linkedin.com/in/username",
+      linear: "from-blue-600/20 to-indigo-600/20"
+    },
+    {
+      icon: "fab fa-github",
+      title: "GitHub",
+      info: "github.com/username",
+      link: "https://github.com/username",
+      linear: "from-gray-600/20 to-gray-800/20"
+    },
+    {
+      icon: "fab fa-twitter",
+      title: "Twitter",
+      info: "@username",
+      link: "https://twitter.com/username",
+      linear: "from-sky-500/20 to-blue-500/20"
+    }
   ];
-
+  
   return (
     <section
-      id="contact" 
-      className="w-full min-h-screen relative bg-[#0a0a0a] overflow-hidden py-20 px-4 md:px-20 flex flex-col items-center"
+      id="contact"
+      ref={sectionRef}
+      className="relative bg-black text-white overflow-hidden"
     >
-      {/* Dynamic Background */}
-      <div className="absolute inset-0">
-        <ParticlesBackground />
-        {/* Grid Overlay */}
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-linear(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0)`,
-          backgroundSize: '40px 40px'
-        }}></div>
-      </div>
-
-      {/* Main Container */}
-      <div className="relative z-10 w-full max-w-7xl">
-            {/* Header Section - Split Design */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-16">
-          {/* Left Side - Bold Title */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
-            <div className="sticky top-24">
-              <motion.div
-                animate={{ rotate: [0, 5, -5, 0] }}
-                transition={{ duration: 6, repeat: Infinity }}
-                className="inline-block mb-4 sm:mb-6"
-              >
-                <span className="text-5xl sm:text-7xl lg:text-8xl">👋</span>
-              </motion.div>
-              
-              <h2 className="text-4xl sm:text-5xl lg:text-7xl xl:text-8xl font-black leading-none">
-                <span className="text-white">LET'S</span>
-                <br />
-                <span className="bg-linear-to-r from-yellow-400 via-orange-500 to-red-500 text-transparent bg-clip-text text-4xl sm:text-5xl lg:text-7xl xl:text-8xl">
-                  CONNECT
-                </span>
-              </h2>
-              
-              <p className="text-gray-400 text-base sm:text-lg mt-6 sm:mt-8 max-w-md">
-                Got a wild idea? A project that needs some magic? 
-                <span className="text-white font-bold"> I'm all ears.</span>
-              </p>
-
-              {/* Stats */}
-              <div className="flex gap-6 sm:gap-8 mt-8 sm:mt-12">
-                {[
-                  { number: "24h", label: "Response Time" },
-                  { number: "100+", label: "Projects" },
-                  { number: "50+", label: "Clients" },
-                ].map((stat, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="text-center"
-                  >
-                    <div className="text-2xl font-bold text-white">{stat.number}</div>
-                    <div className="text-xs text-gray-500">{stat.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Right Side - Image Card */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
-            <div className="relative">
-              {/* Image Frame */}
-              <div className="absolute inset-0 bg-linear-to-r from-yellow-400 to-orange-500 rounded-3xl transform rotate-3 scale-105 opacity-30 blur-2xl"></div>
-              
-              <div className="relative bg-linear-to-br from-gray-900 to-black p-1 rounded-3xl">
-                <div className="bg-black rounded-3xl overflow-hidden">
-                  <motion.img
-                    src={Astra}
-                    alt="Contact"
-                    className="w-full h-auto object-cover mix-blend-luminosity hover:mix-blend-normal transition-all duration-500"
-                    whileHover={{ scale: 1.05 }}
-                  />
-                </div>
-              </div>
-
-              {/* Floating Badges */}
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -top-4 -right-4 bg-linear-to-r from-yellow-400 to-orange-500 text-black font-bold px-6 py-3 rounded-full shadow-xl"
-              >
-                ⚡ Available for work
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Form Section - Card Design */}
+      {/* Animated Background Elements */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{ y: bgY, opacity: bgOpacity }}
+      >
+        {/* linear Orbs */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-40 right-10 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-cyan-600/10 rounded-full blur-3xl" />
+        
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 bg-[linear-linear(rgba(255,255,255,0.02)_1px,transparent_1px),linear-linear(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-size-[50px_50px]" />
+      </motion.div>
+      
+      {/* Main Content Container */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+          className="text-center mb-12 lg:mb-16"
         >
-          {/* Background Card */}
-          <div className="absolute inset-0 bg-linear-to-r from-yellow-400/20 via-orange-500/20 to-red-500/20 rounded-3xl blur-3xl"></div>
+          {/* Section Badge */}
+          <motion.div
+            variants={itemVariants}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-6"
+          >
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-sm font-medium text-gray-300">Get in Touch</span>
+          </motion.div>
           
-          <div className="relative bg-linear-to-br from-gray-900/90 to-black/90 backdrop-blur-xl rounded-3xl border border-white/10 p-6 sm:p-8 md:p-12">
+          {/* Section Title */}
+          <motion.h2
+            variants={itemVariants}
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-linear-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent"
+          >
+            Let's Connect
+          </motion.h2>
+          
+          {/* Section Description */}
+          <motion.p
+            variants={itemVariants}
+            className="text-gray-400 text-lg max-w-2xl mx-auto"
+          >
+            Have a project in mind or just want to say hello? I'd love to hear from you.
+            Let's create something amazing together.
+          </motion.p>
+        </motion.div>
+        
+        {/* Contact Grid - Form and Info */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+          {/* Contact Form Card */}
+          <motion.div
+            ref={formRef}
+            variants={cardVariants}
+            initial="hidden"
+            animate={isFormInView ? "visible" : "hidden"}
+            className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/70 rounded-2xl p-6 sm:p-8"
+          >
+            <h3 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+              <i className="fas fa-paper-plane text-cyan-400" />
+              Send a Message
+            </h3>
             
-            {/* Tabs */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-2 sm:gap-4 mb-8 sm:mb-10 border-b border-white/10 pb-4">
-              {[
-                { id: "project", label: "New Project", icon: "🚀" },
-                { id: "collab", label: "Collaboration", icon: "🤝" },
-                { id: "other", label: "Just Say Hi", icon: "👋" },
-              ].map((tab) => (
-                <motion.button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-medium transition-all ${
-                    activeTab === tab.id
-                      ? "bg-linear-to-r from-yellow-400 to-orange-500 text-black"
-                      : "bg-white/5 text-gray-400 hover:text-white"
-                  }`}
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Name Field */}
+              <div className="relative">
+                <motion.div
+                  whileFocus={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <span className="mr-1 sm:mr-2">{tab.icon}</span>
-                  <span className="hidden sm:inline">{tab.label}</span>
-                  <span className="sm:hidden">{tab.icon}</span>
-                </motion.button>
-              ))}
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
-              {/* Two Column Layout */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                {/* Name Field */}
-                <div className="space-y-2">
-                  <label className="block text-xs sm:text-sm font-medium text-gray-400">
-                    YOUR NAME <span className="text-orange-500">*</span>
-                  </label>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="e.g., John Doe"
-                    className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-sm sm:text-base text-white placeholder-gray-600 focus:border-orange-500 focus:outline-none transition-all"
+                    required
+                    className="w-full bg-white/5 border border-white/15 rounded-xl px-11 py-3.5 text-white placeholder-gray-500 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
+                    placeholder="Your Name"
                   />
-                  {errors.name && (
-                    <p className="text-orange-500 text-xs mt-1">{errors.name}</p>
-                  )}
-                </div>
-
-                {/* Email Field */}
-                <div className="space-y-2">
-                  <label className="block text-xs sm:text-sm font-medium text-gray-400">
-                    EMAIL <span className="text-orange-500">*</span>
-                  </label>
+                </motion.div>
+                <i className="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
+              </div>
+              
+              {/* Email Field */}
+              <div className="relative">
+                <motion.div
+                  whileFocus={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="hello@domain.com"
-                    className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-sm sm:text-base text-white placeholder-gray-600 focus:border-orange-500 focus:outline-none transition-all"
+                    required
+                    className="w-full bg-white/5 border border-white/15 rounded-xl px-11 py-3.5 text-white placeholder-gray-500 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
+                    placeholder="Email Address"
                   />
-                  {errors.email && (
-                    <p className="text-orange-500 text-xs mt-1">{errors.email}</p>
-                  )}
-                </div>
-              </div>
-
-              {/* Service Selection - Creative Card Style */}
-              <div className="space-y-4">
-                <label className="block text-xs sm:text-sm font-medium text-gray-400">
-                  WHAT DO YOU NEED? <span className="text-orange-500">*</span>
-                </label>
-                
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
-                  {services.map((service) => (
-                    <motion.button
-                      key={service.id}
-                      type="button"
-                      whileHover={{ scale: 1.05, y: -5 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => setFormData({...formData, service: service.label})}
-                      className={`relative p-3 sm:p-6 rounded-xl sm:rounded-2xl border-2 transition-all ${
-                        formData.service === service.label
-                          ? `bg-linear-to-r ${service.color} border-transparent`
-                          : 'bg-white/5 border-white/10 hover:border-white/30'
-                      }`}
-                    >
-                      <div className="text-2xl sm:text-3xl mb-1 sm:mb-2">{service.icon}</div>
-                      <div className={`text-xs sm:text-sm font-medium ${
-                        formData.service === service.label ? 'text-white' : 'text-gray-400'
-                      }`}>
-                        {service.label}
-                      </div>
-                    </motion.button>
-                  ))}
-                </div>
-                
-                {errors.service && (
-                  <p className="text-orange-500 text-xs">{errors.service}</p>
-                )}
-              </div>
-
-              {/* Budget Slider Style */}
-              {formData.service && formData.service !== "other" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="space-y-4"
-                >
-                  <label className="block text-xs sm:text-sm font-medium text-gray-400">
-                    BUDGET RANGE (USD) <span className="text-orange-500">*</span>
-                  </label>
-                  
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="budget"
-                      value={formData.budget}
-                      onChange={handleChange}
-                      placeholder="Enter your budget"
-                      className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-sm sm:text-base text-white placeholder-gray-600 focus:border-orange-500 focus:outline-none transition-all"
-                    />
-                    <span className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-gray-500">$</span>
-                  </div>
-                  
-                  {errors.budget && (
-                    <p className="text-orange-500 text-xs">{errors.budget}</p>
-                  )}
                 </motion.div>
-              )}
-
-              {/* Idea Field - Big Textarea */}
-              <div className="space-y-2">
-                <label className="block text-xs sm:text-sm font-medium text-gray-400">
-                  YOUR IDEA <span className="text-orange-500">*</span>
-                </label>
-                <textarea
-                  name="idea"
-                  rows={4}
-                  value={formData.idea}
-                  onChange={handleChange}
-                  placeholder="Tell me everything... The more details, the better!"
-                  className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border-2 border-white/10 rounded-2xl text-sm sm:text-base text-white placeholder-gray-600 focus:border-orange-500 focus:outline-none transition-all resize-none"
-                />
-                {errors.idea && (
-                  <p className="text-orange-500 text-xs">{errors.idea}</p>
-                )}
+                <i className="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
               </div>
-
-              {/* Character Counter */}
-              <div className="text-right text-xs text-gray-600">
-                {formData.idea.length}/500 characters
-              </div>
-
-              {/* Submit Area */}
-              <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 pt-4 sm:pt-6">
-                {/* Submit Button */}
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  disabled={status === "sending"}
-                  type="submit"
-                  className="relative group w-full sm:w-auto"
+              
+              {/* Subject Field */}
+              <div className="relative">
+                <motion.div
+                  whileFocus={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  {/* Button Background */}
-                  <div className="absolute inset-0 bg-linear-to-r from-yellow-400 to-orange-500 rounded-2xl opacity-80 group-hover:opacity-100 transition-opacity"></div>
-                  
-                  {/* Button Content */}
-                  <div className="relative px-8 sm:px-12 py-4 sm:py-5 text-black font-bold text-base sm:text-lg rounded-2xl flex items-center justify-center sm:justify-start gap-3">
-                    {status === "sending" ? (
-                      <>
-                        <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>
-                        <span className="hidden sm:inline">SENDING...</span>
-                        <span className="sm:hidden">...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>SEND MESSAGE</span>
-                        <motion.span
-                          animate={{ x: [0, 5, 0] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
-                        >
-                          →
-                        </motion.span>
-                      </>
-                    )}
-                  </div>
-                </motion.button>
-
-                {/* Status Message */}
-                <AnimatePresence>
-                  {status && status !== "sending" && (
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0 }}
-                      className={`px-6 py-3 rounded-2xl ${
-                        status === "success" 
-                          ? "bg-green-500/20 text-green-400" 
-                          : "bg-red-500/20 text-red-400"
-                      }`}
-                    >
-                      {status === "success" ? "✅ Message sent!" : "❌ Try again"}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                  <input
+                    type="text"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-white/5 border border-white/15 rounded-xl px-11 py-3.5 text-white placeholder-gray-500 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
+                    placeholder="Subject"
+                  />
+                </motion.div>
+                <i className="fas fa-tag absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
               </div>
-
-              {/* Social Links */}
-              <div className="flex items-center gap-6 pt-6 border-t border-white/10">
-                <span className="text-sm text-gray-600">CONNECT WITH ME:</span>
-                {["GitHub", "LinkedIn", "Twitter", "Dribbble"].map((social) => (
-                  <motion.a
-                    key={social}
-                    href="#"
-                    whileHover={{ y: -3 }}
-                    className="text-gray-500 hover:text-white text-sm transition-colors"
+              
+              {/* Message Field */}
+              <div className="relative">
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  rows="4"
+                  className="w-full bg-white/5 border border-white/15 rounded-xl px-11 py-3.5 text-white placeholder-gray-500 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all resize-none"
+                  placeholder="Your Message..."
+                />
+                <i className="fas fa-comment absolute left-4 top-4 text-gray-500 text-sm" />
+              </div>
+              
+              {/* Submit Button */}
+              <motion.button
+                type="submit"
+                disabled={isSubmitting}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`w-full py-3.5 rounded-xl font-semibold text-lg transition-all flex items-center justify-center gap-2 ${
+                  isSubmitting
+                    ? "bg-gray-600 cursor-not-allowed"
+                    : "bg-linear-to-r from-white to-gray-300 text-black hover:shadow-lg hover:shadow-white/20"
+                }`}
+              >
+                {isSubmitting ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <i className="fas fa-paper-plane" />
+                    Send Message
+                  </>
+                )}
+              </motion.button>
+              
+              {/* Status Messages */}
+              <AnimatePresence>
+                {submitStatus === "success" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="bg-green-500/20 border border-green-500/30 rounded-xl p-3 text-green-400 text-sm flex items-center gap-2"
                   >
-                    {social}
-                  </motion.a>
-                ))}
-              </div>
+                    <i className="fas fa-check-circle" />
+                    Message sent successfully! I'll get back to you soon.
+                  </motion.div>
+                )}
+                {submitStatus === "error" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="bg-red-500/20 border border-red-500/30 rounded-xl p-3 text-red-400 text-sm flex items-center gap-2"
+                  >
+                    <i className="fas fa-exclamation-circle" />
+                    Something went wrong. Please try again later.
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </form>
-          </div>
-        </motion.div>
+          </motion.div>
+          
+          {/* Contact Info Card */}
+          <motion.div
+            variants={cardVariants}
+            initial="hidden"
+            animate={isFormInView ? "visible" : "hidden"}
+            transition={{ delay: 0.2 }}
+            className="space-y-6"
+          >
+            {/* Intro Card */}
+            <div className="bg-linear-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/70 rounded-2xl p-6 sm:p-8">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-full bg-linear-to-r from-cyan-500 to-blue-500 flex items-center justify-center">
+                  <i className="fas fa-code text-white text-xl" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold">Available for Opportunities</h3>
+                  <p className="text-gray-400 text-sm">Open to internships & collaborations</p>
+                </div>
+              </div>
+              <p className="text-gray-300 leading-relaxed">
+                I'm currently looking for exciting web development opportunities.
+                Whether you have a project in mind or just want to connect, feel free to reach out!
+              </p>
+            </div>
+            
+            {/* Contact Methods Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {contactMethods.map((method, idx) => (
+                <motion.a
+                  key={idx}
+                  href={method.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.03, y: -5 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-gray-800/40 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 transition-all cursor-pointer group hover:border-gray-500"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-lg bg-linear-to-r ${method.linear} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                      <i className={`${method.icon} text-white text-lg`} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs text-gray-400">{method.title}</p>
+                      <p className="text-sm font-medium text-white truncate max-w-37.5 sm:max-w-none">
+                        {method.info}
+                      </p>
+                    </div>
+                    <i className="fas fa-arrow-right text-gray-500 group-hover:text-white transition-colors" />
+                  </div>
+                </motion.a>
+              ))}
+            </div>
+            
+            {/* Availability Status */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={isFormInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              transition={{ delay: 0.4 }}
+              className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10"
+            >
+              <div className="relative">
+                <div className="w-3 h-3 rounded-full bg-green-400 animate-pulse" />
+                <div className="absolute inset-0 w-3 h-3 rounded-full bg-green-400 animate-ping opacity-75" />
+              </div>
+              <span className="text-sm text-gray-300">
+                Available for <span className="text-white font-medium">immediate response</span> during working hours
+              </span>
+            </motion.div>
+          </motion.div>
+        </div>
+        
+        {/* Decorative Bottom Element */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 1 }}
+          className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-white/20 to-transparent"
+        />
       </div>
     </section>
   );
-}
+};
+
+export default Contact; 
