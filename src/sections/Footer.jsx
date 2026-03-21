@@ -54,7 +54,7 @@ const Footer = () => {
         initial={{ opacity: 0, y: 30 }} // Start faded & lowered
         whileInView={{ opacity: 1, y: 0 }} // Animate when scrolled into view
         transition={{ duration: 0.8 }}
-        className="relative z-10 px-4 sm:px-6 md:px-8 lg:px-10 py-16 md:py-20 flex flex-col items-center text-center space-y-6"
+        className="relative z-10 px-4 sm:px-6 md:px-8 lg:px-10 py-12 sm:py-16 md:py-20 flex flex-col items-center text-center space-y-4 sm:space-y-6"
       >
         {/* --- Personal Name / Branding --- */}
         {/* Change text to your name or brand */}
@@ -62,7 +62,7 @@ const Footer = () => {
           <h1
             className="font-bangers font-semibold leading-none text-white text-center select-none"
             style={{
-              fontSize: "clamp(3rem, 5vw, 14rem)", // Responsive scaling
+              fontSize: "clamp(2rem, 5vw, 14rem)", // Responsive scaling
               letterSpacing: "0.02em",
               lineHeight: 0.9,
               paddingLeft: "3vw",
@@ -77,11 +77,11 @@ const Footer = () => {
 
         {/* --- Accent underline --- */}
         {/* Decorative gradient line under name */}
-        <div className="h-0.75 w-24 md:w-32 rounded-full bg-linear-to-r from-[#0D58CC] via-cyan-300 to-emerald-400" />
+        <div className="h-0.75 w-20 sm:w-24 md:w-32 rounded-full bg-linear-to-r from-[#0D58CC] via-cyan-300 to-emerald-400" />
 
         {/* --- Social Media Links --- */}
         {/* Icons mapped dynamically from `socials` array */}
-        <div className="flex gap-5 text-2xl md:text-3xl">
+        <div className="flex gap-4 sm:gap-5 text-xl sm:text-2xl md:text-3xl">
           {socials.map(({ Icon, label, href }) => (
             <motion.a
               key={label}

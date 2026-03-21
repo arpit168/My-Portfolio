@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { FaPlay, FaPause } from "react-icons/fa";
+import {motion} from "framer-motion";
 
 const MusicPlayer = () => {
   const playlist = [
@@ -160,8 +161,12 @@ const MusicPlayer = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center space-y-2">
-      <p className="text-xs text-gray-300 italic">{infoText}</p>
+    <motion.div  drag
+      style={{
+       
+        borderRadius: "10px"
+      }}  className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-center space-y-2">
+      <p className="text-xs sm:text-sm text-gray-300 italic">{infoText}</p>
 
       <audio
         ref={audioRef}
@@ -173,7 +178,7 @@ const MusicPlayer = () => {
       <button
         onClick={handleClick}
         onTouchStart={handleDoubleTapMobile}
-        className="p-4 rounded-full shadow-lg transition transform hover:scale-110"
+        className="p-3 sm:p-4 rounded-full shadow-lg transition transform hover:scale-110 active:scale-95"
         style={{
           background: "linear-gradient(135deg, #00f0ff, #00ff80)",
           boxShadow: "0 0 15px #00f0ff, 0 0 25px #00ff80",
@@ -181,9 +186,9 @@ const MusicPlayer = () => {
         }}
         aria-label={isPlaying ? "Pause music" : "Play music"}
       >
-        {isPlaying ? <FaPause size={20} /> : <FaPlay size={20} />}
+        {isPlaying ? <FaPause size={16} className="sm:w-5 sm:h-5" /> : <FaPlay size={16} className="sm:w-5 sm:h-5" />}
       </button>
-    </div>
+    </motion.div>
   );
 };
 

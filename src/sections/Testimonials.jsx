@@ -52,7 +52,7 @@ function Testimonials() {
     // Section wrapper with styling
     <section
       id="testimonials" // ID for navigation
-      className="relative min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-20 "
+      className="relative min-h-screen bg-black text-white flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 py-16 sm:py-20"
       // Makes this section full-screen height, black background, white text, centered content
     >
       {/* Animated Section Title */}
@@ -60,13 +60,13 @@ function Testimonials() {
         initial={{ opacity: 0, y: -50 }} // Start invisible & slightly above
         animate={{ opacity: 1, y: 0 }} // Fade in & slide down
         transition={{ duration: 0.6 }} // Animation duration is 0.6s
-        className="text-4xl font-bold mb-16" // Styling for title
+        className="text-3xl sm:text-4xl font-bold mb-12 sm:mb-16" // Styling for title
       >
         What People Say
       </MH2>
 
       {/* Grid for all testimonial cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 max-w-6xl w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 max-w-6xl w-full">
         {/* Looping through testimonials array to create each card */}
         {testimonials.map((testi, idx) => (
           <MDiv
