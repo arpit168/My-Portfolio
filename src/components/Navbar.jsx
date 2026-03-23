@@ -74,8 +74,8 @@ export default function Navbar() {
         }`}
       >
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <img src={Logo} alt="Logo" className="w-6 h-6 sm:w-8 sm:h-8" />
+        <div className="flex items-center ">
+          <img src={Logo} alt="Logo" className="h-20 w-20" />
           <div className="text-lg sm:text-2xl font-bold text-white hidden sm:block">
            Arpit
           </div>

@@ -59,7 +59,7 @@ const Home = React.forwardRef((props, ref) => {
     <section
       ref={ref}
       id="home"
-      className="h-screen w-full relative overflow-hidden bg-black"
+      className="md:h-screen h-auto pt-25 w-full relative overflow-hidden bg-black"
     >
       <ParticleBackground />
 

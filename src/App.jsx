@@ -22,6 +22,7 @@ export default function App() {
       root
       options={{
         lerp:0.1,
+        duration:1.2,
         orientation:"vertical",
         gestureOrientation:"vertical",
         smoothWheel:true,
