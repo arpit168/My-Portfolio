@@ -28,7 +28,7 @@ export default function About() {
         >
           {/* Avatar / Card */}
           <motion.div
-            className="relative w-40 h-40 md:w-55 md:h-55 rounded-2xl overflow-hidden shadow-2xl bg-linear-to-br from-[#1CD8D2]/20 to-[#302b63]/20 border border-[#1CD8D2]/25"
+            className="relative w-80 h-100 md:w-65 md:h-85 rounded-2xl overflow-hidden shadow-2xl bg-linear-to-br from-[#1CD8D2]/20 to-[#302b63]/20 border border-[#1CD8D2]/25"
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 200, damping: 18 }}
             aria-hidden="true"

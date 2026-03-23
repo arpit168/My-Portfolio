@@ -76,7 +76,7 @@ export default function OverlayMenu({ isOpen, onClose, hamburgerRef }) {
               exit={{ opacity: 0, scale: 0 }}
               transition={{ delay: 0.3 }}
               className="absolute top-6 right-6 z-50 group"
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
             >
               <div className="relative">
@@ -116,7 +116,7 @@ export default function OverlayMenu({ isOpen, onClose, hamburgerRef }) {
                       key={item.name}
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 + index * 0.1 }}
+                      transition={{ delay: 0.9 + index * 0.2 }}
                       className="relative"
                     >
                       <a
