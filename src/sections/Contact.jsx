@@ -124,21 +124,21 @@ export default function Contact() {
   return (
     <section
       id="contact" 
-      className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden text-white py-20 px-6 md:px-20"
+      className="relative min-h-screen bg-linear-to-br from-black via-gray-900 to-black overflow-hidden text-white py-20 px-6 md:px-20"
     >
       {/* Enhanced Particles Background */}
       <ParticlesBackground />
       
-      {/* Animated Gradient Orbs */}
+      {/* Animated linear Orbs */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-40 right-10 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-3xl animate-pulse delay-500" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-cyan-600/10 rounded-full blur-3xl animate-pulse delay-500" />
         <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl animate-pulse delay-700" />
       </div>
 
       {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(28,216,210,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(28,216,210,0.02)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-linear(rgba(28,216,210,0.02)_1px,transparent_1px),linear-linear(90deg,rgba(28,216,210,0.02)_1px,transparent_1px)] bg-sixe-[50px_50px] pointer-events-none" />
 
       {/* Contact Section Content */}
       <motion.div 
@@ -151,13 +151,13 @@ export default function Contact() {
         {/* Section Header */}
         <div className="text-center mb-12 lg:mb-16">
           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-6">
-            <span className="w-2 h-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-linear-to-r from-cyan-400 to-blue-500 animate-pulse" />
             <span className="text-sm font-medium text-gray-300">Get in Touch</span>
           </motion.div>
           
           <motion.h2 
             variants={itemVariants}
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-100 to-blue-200 bg-clip-text text-transparent"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-linear-to-r from-white via-cyan-100 to-blue-200 bg-clip-text text-transparent"
           >
             Let's Work Together
           </motion.h2>
@@ -178,12 +178,12 @@ export default function Contact() {
           >
             <div className="relative group">
               {/* Glow Effect */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute -inset-4 bg-linear-to-r from-cyan-500/20 to-blue-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               <motion.img
                 src={Astra}
                 alt="Contact"
-                className="relative w-80 lg:w-[500px] rounded-3xl shadow-2xl object-cover"
+                className="relative w-80 lg:w-125 rounded-3xl shadow-2xl object-cover"
                 animate={{ y: [0, -15, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                 whileHover={{ scale: 1.02 }}
@@ -199,12 +199,12 @@ export default function Contact() {
             variants={itemVariants}
             className="w-full lg:w-1/2"
           >
-            <div className="bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl p-8 lg:p-10 rounded-3xl shadow-2xl border border-white/20">
+            <div className="bg-linear-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl p-8 lg:p-10 rounded-3xl shadow-2xl border border-white/20">
               <div className="flex items-center gap-3 mb-8">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-linear-to-r from-cyan-500 to-blue-500 flex items-center justify-center">
                   <i className="fas fa-paper-plane text-white text-lg" />
                 </div>
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                <h2 className="text-3xl font-bold bg-linear-to-r from-white to-gray-300 bg-clip-text text-transparent">
                   Send a Message
                 </h2>
               </div>
@@ -472,7 +472,7 @@ export default function Contact() {
                     transition-all duration-300
                     ${status === "sending" 
                       ? "bg-gray-600 cursor-not-allowed opacity-60" 
-                      : "bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-2xl hover:shadow-cyan-500/30"
+                      : "bg-linear-to-r from-cyan-500 to-blue-600 hover:shadow-2xl hover:shadow-cyan-500/30"
                     }
                   `}
                 >
@@ -496,7 +496,7 @@ export default function Contact() {
                   
                   {/* Button Hover Effect */}
                   {status !== "sending" && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-linear-to-r from-cyan-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   )}
                 </motion.button>
               </form>
@@ -506,7 +506,7 @@ export default function Contact() {
       </motion.div>
 
       {/* Decorative Bottom Element */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-cyan-500/30 to-transparent" />
     </section>
   );
 }
