@@ -42,7 +42,7 @@ export default function About() {
 
           {/* Name + Role + Bio + CTAs */}
           <div className="flex-1 flex flex-col justify-center text-center md:text-left">
-            <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-[#1CD8D2] via-[#00bf8f] to-[#302b63]">
+            <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-clip-text  text-transparent bg-linear-to-r from-[#1CD8D2] via-[#00bf8f] to-[#302b63]">
               Arpit Gupta
             </h2>
             <p className="mt-2 text-lg sm:text-xl text-white/90 font-semibold">
@@ -80,7 +80,7 @@ export default function About() {
             <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start">
               <a
                 href="#projects"
-                className="inline-flex items-center justify-center rounded-lg bg-white text-black font-semibold px-5 py-3 hover:bg-gray-200 transition"
+                className="inline-flex items-center animate-pulse justify-center rounded-lg bg-white text-black font-semibold px-5 py-3 hover:bg-gray-200 transition"
                 aria-label="View my projects"
               >
                 View Projects
