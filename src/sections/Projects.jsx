@@ -75,7 +75,7 @@ export default function Projects() {
       {
         title: "Cravings",
         link: "https://cravings-food-by-arpit.netlify.app/",
-        backgroundColor: "#243B55",
+        backgroundColor: "#0F172A",
         image: isMobile ? crave1 : crave2,
       },
       {
