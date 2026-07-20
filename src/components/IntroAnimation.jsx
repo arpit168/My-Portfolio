@@ -6,8 +6,8 @@ gsap.registerPlugin(MorphSVGPlugin);
 
 export default function IntroAnimation({ onFinish }) {
   const greetings = [
-    "Hello", "नमस्ते", "Hola",
-    "Hej", "Hallo", "Salam"
+    "Hii","Hello", "नमस्ते", "Hola",
+    "Hej", "Hallo", 
   ];
 
   const [index, setIndex] = useState(0);
