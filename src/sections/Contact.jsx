@@ -139,12 +139,12 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black py-16 text-white sm:py-20 lg:py-24"
+      className="relative w-full overflow-hidden bg-linear-to-br from-black via-gray-900 to-black py-16 text-white sm:py-20 lg:py-24"
     >
       {/* Enhanced Particles Background */}
       <ParticlesBackground />
 
-      {/* Animated Gradient Orbs */}
+      {/* Animated linear Orbs */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-4 top-6 h-32 w-32 animate-pulse rounded-full bg-purple-600/15 blur-3xl sm:left-10 sm:top-10 sm:h-48 sm:w-48" />
         <div className="delay-1000 absolute bottom-10 right-4 h-40 w-40 animate-pulse rounded-full bg-blue-600/15 blur-3xl sm:bottom-20 sm:right-10 sm:h-64 sm:w-64" />
@@ -157,7 +157,7 @@ export default function Contact() {
         className="pointer-events-none absolute inset-0 opacity-60"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(28,216,210,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(28,216,210,0.05) 1px, transparent 1px)",
+            "linear-linear(rgba(28,216,210,0.05) 1px, transparent 1px), linear-linear(90deg, rgba(28,216,210,0.05) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
         }}
       />
@@ -176,7 +176,7 @@ export default function Contact() {
             variants={itemVariants}
             className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm"
           >
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gradient-to-r from-cyan-400 to-blue-500" />
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-linear-to-r from-cyan-400 to-blue-500" />
             <span className="text-xs font-medium tracking-wide text-gray-300">
               Get in Touch
             </span>
@@ -184,7 +184,7 @@ export default function Contact() {
 
           <motion.h2
             variants={itemVariants}
-            className="mb-3 bg-gradient-to-r from-white via-cyan-100 to-blue-200 bg-clip-text text-3xl font-bold leading-tight text-transparent sm:text-4xl md:text-5xl"
+            className="mb-3 bg-linear-to-r from-white via-cyan-100 to-blue-200 bg-clip-text text-3xl font-bold leading-tight text-transparent sm:text-4xl md:text-5xl"
           >
             Let&apos;s Work Together
           </motion.h2>
@@ -205,7 +205,7 @@ export default function Contact() {
           >
             <div className="group relative">
               {/* Glow Effect */}
-              <div className="absolute -inset-4 rounded-2xl bg-gradient-to-r from-cyan-500/20 to-blue-500/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
+              <div className="absolute -inset-4 rounded-2xl bg-linear-to-r from-cyan-500/20 to-blue-500/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
 
               <motion.img
                 src={Astra}
@@ -223,12 +223,12 @@ export default function Contact() {
 
           {/* Right Side Contact Form */}
           <motion.div variants={itemVariants} className="w-full lg:w-[58%]">
-            <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 via-white/4 to-transparent p-5 shadow-2xl backdrop-blur-xl sm:p-7 lg:p-8">
+            <div className="rounded-2xl border border-white/10 bg-linear-to-br from-white/8 via-white/4 to-transparent p-5 shadow-2xl backdrop-blur-xl sm:p-7 lg:p-8">
               <div className="mb-6 flex items-center gap-2.5">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-linear-to-r from-cyan-500 to-blue-500">
                   <i className="fas fa-paper-plane text-sm text-white" />
                 </div>
-                <h2 className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-xl font-bold text-transparent sm:text-2xl">
+                <h2 className="bg-linear-to-r from-white to-gray-300 bg-clip-text text-xl font-bold text-transparent sm:text-2xl">
                   Send a Message
                 </h2>
               </div>
@@ -527,7 +527,7 @@ export default function Contact() {
                     ${
                       status === "sending"
                         ? "cursor-not-allowed bg-gray-600 opacity-60"
-                        : "bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-xl hover:shadow-cyan-500/20"
+                        : "bg-linear-to-r from-cyan-500 to-blue-600 hover:shadow-xl hover:shadow-cyan-500/20"
                     }
                   `}
                 >
@@ -567,7 +567,7 @@ export default function Contact() {
 
                   {/* Button Hover Effect */}
                   {status !== "sending" && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    <div className="absolute inset-0 bg-linear-to-r from-cyan-600 to-blue-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                   )}
                 </motion.button>
               </form>
@@ -577,7 +577,7 @@ export default function Contact() {
       </motion.div>
 
       {/* Decorative Bottom Element */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-cyan-500/20 to-transparent" />
     </section>
   );
 }
