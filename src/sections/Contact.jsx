@@ -18,6 +18,12 @@ const SERVICE_ID = import.meta.env.VITE_SERVICE_ID;
 const TEMPLATE_ID = import.meta.env.VITE_TEMPLATE_ID;
 const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY;
 
+const SERVICE_OPTIONS = [
+  { value: "web-development", label: "🌐 Web Development" },
+  { value: "mobile-application", label: "📱 Mobile Application" },
+  { value: "other", label: "💡 Other" },
+];
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -39,6 +45,8 @@ export default function Contact() {
     }
   }, [status]);
 
+  const needsBudget = formData.service !== "" && formData.service !== "other";
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -57,7 +65,7 @@ export default function Contact() {
       (f) => !formData[f].trim() && (newErrors[f] = "Fill this field")
     );
 
-    if (formData.service !== "other" && !formData.budget.trim())
+    if (needsBudget && !formData.budget.trim())
       newErrors.budget = "Fill this field";
 
     setErrors(newErrors);
@@ -84,7 +92,7 @@ export default function Contact() {
       );
 
       setStatus("success");
-      setFormData({name: "",email: "",service: "",budget: "",idea: ""});
+      setFormData({ name: "", email: "", service: "", budget: "", idea: "" });
     } catch (err) {
       console.error("EmailJS Error:", err);
       setStatus("error");
@@ -97,331 +105,369 @@ export default function Contact() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+        staggerChildren: 0.08,
+        delayChildren: 0.15,
+      },
+    },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 16 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
+      transition: { duration: 0.45, ease: "easeOut" },
+    },
   };
 
   const formFieldVariants = {
-    hidden: { opacity: 0, x: 30 },
+    hidden: { opacity: 0, y: 12 },
     visible: {
       opacity: 1,
-      x: 0,
-      transition: { duration: 0.4 }
-    }
+      y: 0,
+      transition: { duration: 0.35 },
+    },
+  };
+
+  const fieldClasses = (name) => {
+    if (errors[name]) return "border-red-500/60 focus:border-red-500";
+    if (focusedField === name)
+      return "border-cyan-500/70 shadow-lg shadow-cyan-500/10";
+    return "border-white/10 focus:border-cyan-500/50";
   };
 
   return (
     <section
-      id="contact" 
-      className="relative min-h-[65vh] bg-linear-to-br from-black via-gray-900 to-black overflow-hidden text-white py-12 px-4 md:px-12"
+      id="contact"
+      className="relative w-full overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black py-16 text-white sm:py-20 lg:py-24"
     >
       {/* Enhanced Particles Background */}
       <ParticlesBackground />
-      
-      {/* Animated Gradient Orbs - Reduced size */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-10 left-10 w-48 h-48 bg-purple-600/15 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-64 h-64 bg-blue-600/15 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-600/8 rounded-full blur-3xl animate-pulse delay-500" />
-        <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-emerald-500/8 rounded-full blur-3xl animate-pulse delay-700" />
+
+      {/* Animated Gradient Orbs */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-4 top-6 h-32 w-32 animate-pulse rounded-full bg-purple-600/15 blur-3xl sm:left-10 sm:top-10 sm:h-48 sm:w-48" />
+        <div className="delay-1000 absolute bottom-10 right-4 h-40 w-40 animate-pulse rounded-full bg-blue-600/15 blur-3xl sm:bottom-20 sm:right-10 sm:h-64 sm:w-64" />
+        <div className="delay-500 absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-cyan-600/8 blur-3xl sm:h-96 sm:w-96" />
+        <div className="delay-700 absolute right-1/4 top-1/3 hidden h-48 w-48 animate-pulse rounded-full bg-emerald-500/8 blur-3xl sm:block" />
       </div>
 
       {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 bg-[linear-linear(rgba(28,216,210,0.02)_1px,transparent_1px),linear-linear(90deg,rgba(28,216,210,0.02)_1px,transparent_1px)] bg-sixe-[50px_50px] pointer-events-none" />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-60"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(28,216,210,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(28,216,210,0.05) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
 
-      {/* Contact Section Content - Compact Layout */}
-      <motion.div 
+      {/* Contact Section Content */}
+      <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.2 }}
         variants={containerVariants}
-        className="relative z-10 max-w-6xl mx-auto w-full h-full"
+        className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8"
       >
-        {/* Compact Section Header */}
-        <div className="text-center mb-8">
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-linear-to-r from-cyan-400 to-blue-500 animate-pulse" />
-            <span className="text-xs font-medium text-gray-300">Get in Touch</span>
+        {/* Section Header */}
+        <div className="mb-10 text-center sm:mb-14">
+          <motion.div
+            variants={itemVariants}
+            className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm"
+          >
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gradient-to-r from-cyan-400 to-blue-500" />
+            <span className="text-xs font-medium tracking-wide text-gray-300">
+              Get in Touch
+            </span>
           </motion.div>
-          
-          <motion.h2 
+
+          <motion.h2
             variants={itemVariants}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 bg-linear-to-r from-white via-cyan-100 to-blue-200 bg-clip-text text-transparent"
+            className="mb-3 bg-gradient-to-r from-white via-cyan-100 to-blue-200 bg-clip-text text-3xl font-bold leading-tight text-transparent sm:text-4xl md:text-5xl"
           >
-            Let's Work Together
+            Let&apos;s Work Together
           </motion.h2>
-          
-          <motion.p 
+
+          <motion.p
             variants={itemVariants}
-            className="text-gray-400 text-sm sm:text-base max-w-xl mx-auto"
+            className="mx-auto max-w-xl px-2 text-sm text-gray-400 sm:text-base"
           >
-            Have a project in mind? Let's bring your ideas to life
+            Have a project in mind? Let&apos;s bring your ideas to life.
           </motion.p>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
-          {/* Left Animated Image Section - Smaller */}
+        <div className="flex flex-col-reverse items-stretch gap-8 lg:flex-row lg:items-center lg:gap-12">
+          {/* Left Animated Image Section */}
           <motion.div
             variants={itemVariants}
-            className="w-full lg:w-[45%] flex justify-center"
+            className="flex w-full justify-center lg:w-[42%]"
           >
-            <div className="relative group">
+            <div className="group relative">
               {/* Glow Effect */}
-              <div className="absolute -inset-4 bg-linear-to-r from-cyan-500/20 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
+              <div className="absolute -inset-4 rounded-2xl bg-gradient-to-r from-cyan-500/20 to-blue-500/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
+
               <motion.img
                 src={Astra}
-                alt="Contact"
-                className="relative w-64 lg:w-96 rounded-2xl shadow-2xl object-cover"
+                alt="Illustration representing collaboration and building projects together"
+                className="relative w-48 rounded-2xl object-cover shadow-2xl xs:w-56 sm:w-72 md:w-80 lg:w-full"
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                 whileHover={{ scale: 1.02 }}
               />
-              
+
               {/* Decorative Border */}
-              <div className="absolute inset-0 rounded-2xl border border-white/10 group-hover:border-cyan-500/30 transition-all duration-300" />
+              <div className="absolute inset-0 rounded-2xl border border-white/10 transition-all duration-300 group-hover:border-cyan-500/30" />
             </div>
           </motion.div>
 
-          {/* Right Side Contact Form - Compact Glassmorphism */}
-          <motion.div
-            variants={itemVariants}
-            className="w-full lg:w-[55%]"
-          >
-            <div className="bg-linear-to-br from-white/8 via-white/4 to-transparent backdrop-blur-xl p-6 lg:p-8 rounded-2xl shadow-2xl border border-white/10">
-              <div className="flex items-center gap-2.5 mb-6">
-                <div className="w-8 h-8 rounded-lg bg-linear-to-r from-cyan-500 to-blue-500 flex items-center justify-center">
-                  <i className="fas fa-paper-plane text-white text-sm" />
+          {/* Right Side Contact Form */}
+          <motion.div variants={itemVariants} className="w-full lg:w-[58%]">
+            <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/8 via-white/4 to-transparent p-5 shadow-2xl backdrop-blur-xl sm:p-7 lg:p-8">
+              <div className="mb-6 flex items-center gap-2.5">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500">
+                  <i className="fas fa-paper-plane text-sm text-white" />
                 </div>
-                <h2 className="text-2xl font-bold bg-linear-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                <h2 className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-xl font-bold text-transparent sm:text-2xl">
                   Send a Message
                 </h2>
               </div>
 
-              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-                {/* Name field */}
-                <motion.div 
-                  variants={formFieldVariants}
-                  className="group"
-                  onFocus={() => setFocusedField("name")}
-                  onBlur={() => setFocusedField(null)}
-                >
-                  <label className="mb-1.5 block text-xs font-medium text-gray-400">
-                    Full Name <span className="text-cyan-400">*</span>
-                  </label>
-                  <div className="relative">
-                    <i className="fas fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs" />
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="John Doe"
-                      value={formData.name}
-                      onChange={handleChange}
-                      className={`w-full p-2.5 pl-10 rounded-lg bg-white/5 border transition-all duration-300 text-sm ${
-                        errors.name 
-                          ? "border-red-500/50 focus:border-red-500" 
-                          : focusedField === "name"
-                          ? "border-cyan-500/70 shadow-lg shadow-cyan-500/10"
-                          : "border-white/10 focus:border-cyan-500/50"
-                      } text-white focus:outline-none placeholder:text-gray-600`}
-                    />
-                  </div>
-                  <AnimatePresence>
-                    {errors.name && (
-                      <motion.p 
-                        initial={{ opacity: 0, y: -5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                        className="text-red-400 text-xs mt-1 flex items-center gap-1"
-                      >
-                        <i className="fas fa-exclamation-circle text-[10px]" />
-                        {errors.name}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-
-                {/* Email field */}
-                <motion.div 
-                  variants={formFieldVariants}
-                  className="group"
-                  onFocus={() => setFocusedField("email")}
-                  onBlur={() => setFocusedField(null)}
-                >
-                  <label className="mb-1.5 block text-xs font-medium text-gray-400">
-                    Email Address <span className="text-cyan-400">*</span>
-                  </label>
-                  <div className="relative">
-                    <i className="fas fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs" />
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="john@example.com"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className={`w-full p-2.5 pl-10 rounded-lg bg-white/5 border transition-all duration-300 text-sm ${
-                        errors.email 
-                          ? "border-red-500/50 focus:border-red-500" 
-                          : focusedField === "email"
-                          ? "border-cyan-500/70 shadow-lg shadow-cyan-500/10"
-                          : "border-white/10 focus:border-cyan-500/50"
-                      } text-white focus:outline-none placeholder:text-gray-600`}
-                    />
-                  </div>
-                  <AnimatePresence>
-                    {errors.email && (
-                      <motion.p 
-                        initial={{ opacity: 0, y: -5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                        className="text-red-400 text-xs mt-1 flex items-center gap-1"
-                      >
-                        <i className="fas fa-exclamation-circle text-[10px]" />
-                        {errors.email}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-
-                {/* Service dropdown */}
-                <motion.div 
-                  variants={formFieldVariants}
-                  className="group"
-                  onFocus={() => setFocusedField("service")}
-                  onBlur={() => setFocusedField(null)}
-                >
-                  <label className="mb-1.5 block text-xs font-medium text-gray-400">
-                    Service Needed <span className="text-cyan-400">*</span>
-                  </label>
-                  <div className="relative">
-                    <i className="fas fa-code absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs" />
-                    <select
-                      name="service"
-                      value={formData.service}
-                      onChange={handleChange}
-                      className={`w-full p-2.5 pl-10 rounded-lg bg-white/5 border transition-all duration-300 appearance-none cursor-pointer text-sm ${
-                        errors.service 
-                          ? "border-red-500/50" 
-                          : focusedField === "service"
-                          ? "border-cyan-500/70 shadow-lg shadow-cyan-500/10"
-                          : "border-white/10 focus:border-cyan-500/50"
-                      } text-white focus:outline-none`}
-                    >
-                      <option value="" disabled className="text-gray-400">
-                        Select a service
-                      </option>
-                      <option value="Web Development" className="text-black">🌐 Web Development</option>
-                      <option value="Mobile Application" className="text-black">📱 Mobile Application</option>
-                      <option value="Others" className="text-black">💡 Others</option>
-                    </select>
-                    <i className="fas fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs pointer-events-none" />
-                  </div>
-                  <AnimatePresence>
-                    {errors.service && (
-                      <motion.p 
-                        initial={{ opacity: 0, y: -5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                        className="text-red-400 text-xs mt-1 flex items-center gap-1"
-                      >
-                        <i className="fas fa-exclamation-circle text-[10px]" />
-                        {errors.service}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-
-                {/* Budget field */}
-                {formData.service && formData.service !== "other" && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: -10, height: 0 }}
-                    animate={{ opacity: 1, y: 0, height: "auto" }}
-                    exit={{ opacity: 0, y: -10, height: 0 }}
-                    className="group"
-                    onFocus={() => setFocusedField("budget")}
+              <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
+                {/* Name + Email side by side on larger screens */}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {/* Name field */}
+                  <motion.div
+                    variants={formFieldVariants}
+                    onFocus={() => setFocusedField("name")}
                     onBlur={() => setFocusedField(null)}
                   >
-                    <label className="mb-1.5 block text-xs font-medium text-gray-400">
-                      Budget (USD) <span className="text-cyan-400">*</span>
+                    <label
+                      htmlFor="contact-name"
+                      className="mb-1.5 block text-xs font-medium text-gray-400"
+                    >
+                      Full Name <span className="text-cyan-400">*</span>
                     </label>
                     <div className="relative">
-                      <i className="fas fa-dollar-sign absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs" />
+                      <i className="fas fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-gray-500" />
                       <input
+                        id="contact-name"
                         type="text"
-                        name="budget"
-                        placeholder="5000"
-                        value={formData.budget}
+                        name="name"
+                        placeholder="John Doe"
+                        value={formData.name}
                         onChange={handleChange}
-                        className={`w-full p-2.5 pl-10 rounded-lg bg-white/5 border transition-all duration-300 text-sm ${
-                          errors.budget 
-                            ? "border-red-500/50" 
-                            : focusedField === "budget"
-                            ? "border-cyan-500/70 shadow-lg shadow-cyan-500/10"
-                            : "border-white/10 focus:border-cyan-500/50"
-                        } text-white focus:outline-none placeholder:text-gray-600`}
+                        aria-invalid={!!errors.name}
+                        className={`w-full rounded-lg border bg-white/5 p-2.5 pl-10 text-sm text-white placeholder:text-gray-600 transition-all duration-300 focus:outline-none ${fieldClasses(
+                          "name"
+                        )}`}
                       />
                     </div>
                     <AnimatePresence>
-                      {errors.budget && (
-                        <motion.p 
+                      {errors.name && (
+                        <motion.p
                           initial={{ opacity: 0, y: -5 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -5 }}
-                          className="text-red-400 text-xs mt-1 flex items-center gap-1"
+                          className="mt-1 flex items-center gap-1 text-xs text-red-400"
                         >
                           <i className="fas fa-exclamation-circle text-[10px]" />
-                          {errors.budget}
+                          {errors.name}
                         </motion.p>
                       )}
                     </AnimatePresence>
                   </motion.div>
-                )}
 
-                {/* Idea textarea - Compact */}
-                <motion.div 
+                  {/* Email field */}
+                  <motion.div
+                    variants={formFieldVariants}
+                    onFocus={() => setFocusedField("email")}
+                    onBlur={() => setFocusedField(null)}
+                  >
+                    <label
+                      htmlFor="contact-email"
+                      className="mb-1.5 block text-xs font-medium text-gray-400"
+                    >
+                      Email Address <span className="text-cyan-400">*</span>
+                    </label>
+                    <div className="relative">
+                      <i className="fas fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-gray-500" />
+                      <input
+                        id="contact-email"
+                        type="email"
+                        name="email"
+                        placeholder="john@example.com"
+                        value={formData.email}
+                        onChange={handleChange}
+                        aria-invalid={!!errors.email}
+                        className={`w-full rounded-lg border bg-white/5 p-2.5 pl-10 text-sm text-white placeholder:text-gray-600 transition-all duration-300 focus:outline-none ${fieldClasses(
+                          "email"
+                        )}`}
+                      />
+                    </div>
+                    <AnimatePresence>
+                      {errors.email && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          className="mt-1 flex items-center gap-1 text-xs text-red-400"
+                        >
+                          <i className="fas fa-exclamation-circle text-[10px]" />
+                          {errors.email}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                </div>
+
+                {/* Service + Budget side by side when budget is visible */}
+                <div
+                  className={`grid grid-cols-1 gap-4 ${
+                    needsBudget ? "sm:grid-cols-2" : ""
+                  }`}
+                >
+                  {/* Service dropdown */}
+                  <motion.div
+                    variants={formFieldVariants}
+                    onFocus={() => setFocusedField("service")}
+                    onBlur={() => setFocusedField(null)}
+                  >
+                    <label
+                      htmlFor="contact-service"
+                      className="mb-1.5 block text-xs font-medium text-gray-400"
+                    >
+                      Service Needed <span className="text-cyan-400">*</span>
+                    </label>
+                    <div className="relative">
+                      <i className="fas fa-code absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-gray-500" />
+                      <select
+                        id="contact-service"
+                        name="service"
+                        value={formData.service}
+                        onChange={handleChange}
+                        aria-invalid={!!errors.service}
+                        className={`w-full cursor-pointer appearance-none rounded-lg border bg-white/5 p-2.5 pl-10 pr-9 text-sm text-white transition-all duration-300 focus:outline-none ${fieldClasses(
+                          "service"
+                        )}`}
+                      >
+                        <option value="" disabled className="text-gray-400">
+                          Select a service
+                        </option>
+                        {SERVICE_OPTIONS.map((opt) => (
+                          <option
+                            key={opt.value}
+                            value={opt.value}
+                            className="text-black"
+                          >
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
+                      <i className="fas fa-chevron-down pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-gray-500" />
+                    </div>
+                    <AnimatePresence>
+                      {errors.service && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          className="mt-1 flex items-center gap-1 text-xs text-red-400"
+                        >
+                          <i className="fas fa-exclamation-circle text-[10px]" />
+                          {errors.service}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+
+                  {/* Budget field */}
+                  <AnimatePresence initial={false}>
+                    {needsBudget && (
+                      <motion.div
+                        key="budget"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.25 }}
+                        onFocus={() => setFocusedField("budget")}
+                        onBlur={() => setFocusedField(null)}
+                        className="overflow-hidden"
+                      >
+                        <label
+                          htmlFor="contact-budget"
+                          className="mb-1.5 block text-xs font-medium text-gray-400"
+                        >
+                          Budget (USD) <span className="text-cyan-400">*</span>
+                        </label>
+                        <div className="relative">
+                          <i className="fas fa-dollar-sign absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-gray-500" />
+                          <input
+                            id="contact-budget"
+                            type="text"
+                            inputMode="numeric"
+                            name="budget"
+                            placeholder="5000"
+                            value={formData.budget}
+                            onChange={handleChange}
+                            aria-invalid={!!errors.budget}
+                            className={`w-full rounded-lg border bg-white/5 p-2.5 pl-10 text-sm text-white placeholder:text-gray-600 transition-all duration-300 focus:outline-none ${fieldClasses(
+                              "budget"
+                            )}`}
+                          />
+                        </div>
+                        <AnimatePresence>
+                          {errors.budget && (
+                            <motion.p
+                              initial={{ opacity: 0, y: -5 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -5 }}
+                              className="mt-1 flex items-center gap-1 text-xs text-red-400"
+                            >
+                              <i className="fas fa-exclamation-circle text-[10px]" />
+                              {errors.budget}
+                            </motion.p>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Idea textarea */}
+                <motion.div
                   variants={formFieldVariants}
-                  className="group"
                   onFocus={() => setFocusedField("idea")}
                   onBlur={() => setFocusedField(null)}
                 >
-                  <label className="mb-1.5 block text-xs font-medium text-gray-400">
+                  <label
+                    htmlFor="contact-idea"
+                    className="mb-1.5 block text-xs font-medium text-gray-400"
+                  >
                     Your Idea <span className="text-cyan-400">*</span>
                   </label>
                   <div className="relative">
-                    <i className="fas fa-lightbulb absolute left-3.5 top-3 text-gray-500 text-xs" />
+                    <i className="fas fa-lightbulb absolute left-3.5 top-3 text-xs text-gray-500" />
                     <textarea
+                      id="contact-idea"
                       name="idea"
-                      rows={3}
+                      rows={4}
                       placeholder="Tell me about your amazing project idea..."
                       value={formData.idea}
                       onChange={handleChange}
-                      className={`w-full p-2.5 pl-10 rounded-lg bg-white/5 border transition-all duration-300 resize-none text-sm ${
-                        errors.idea 
-                          ? "border-red-500/50" 
-                          : focusedField === "idea"
-                          ? "border-cyan-500/70 shadow-lg shadow-cyan-500/10"
-                          : "border-white/10 focus:border-cyan-500/50"
-                      } text-white focus:outline-none placeholder:text-gray-600`}
+                      aria-invalid={!!errors.idea}
+                      className={`w-full resize-none rounded-lg border bg-white/5 p-2.5 pl-10 text-sm text-white placeholder:text-gray-600 transition-all duration-300 focus:outline-none ${fieldClasses(
+                        "idea"
+                      )}`}
                     />
                   </div>
                   <AnimatePresence>
                     {errors.idea && (
-                      <motion.p 
+                      <motion.p
                         initial={{ opacity: 0, y: -5 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -5 }}
-                        className="text-red-400 text-xs mt-1 flex items-center gap-1"
+                        className="mt-1 flex items-center gap-1 text-xs text-red-400"
                       >
                         <i className="fas fa-exclamation-circle text-[10px]" />
                         {errors.idea}
@@ -430,25 +476,32 @@ export default function Contact() {
                   </AnimatePresence>
                 </motion.div>
 
-                {/* Compact Status message */}
+                {/* Status message */}
                 <AnimatePresence>
                   {status && (
                     <motion.div
+                      role="status"
+                      aria-live="polite"
                       initial={{ opacity: 0, y: -5, scale: 0.98 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -5, scale: 0.98 }}
-                      className={`rounded-lg p-2.5 text-xs flex items-center gap-2 ${
+                      className={`flex items-center gap-2 rounded-lg p-2.5 text-xs ${
                         status === "sending"
-                          ? "bg-yellow-500/15 border border-yellow-500/20 text-yellow-300"
+                          ? "border border-yellow-500/20 bg-yellow-500/15 text-yellow-300"
                           : status === "success"
-                          ? "bg-green-500/15 border border-green-500/20 text-green-300"
-                          : "bg-red-500/15 border border-red-500/20 text-red-300"
+                          ? "border border-green-500/20 bg-green-500/15 text-green-300"
+                          : "border border-red-500/20 bg-red-500/15 text-red-300"
                       }`}
                     >
-                      <i className={`fas ${
-                        status === "sending" ? "fa-spinner fa-spin" : 
-                        status === "success" ? "fa-check-circle" : "fa-exclamation-circle"
-                      } text-sm`} />
+                      <i
+                        className={`fas ${
+                          status === "sending"
+                            ? "fa-spinner fa-spin"
+                            : status === "success"
+                            ? "fa-check-circle"
+                            : "fa-exclamation-circle"
+                        } text-sm`}
+                      />
                       <span>
                         {status === "sending"
                           ? "Sending..."
@@ -460,28 +513,46 @@ export default function Contact() {
                   )}
                 </AnimatePresence>
 
-                {/* Compact Submit button */}
+                {/* Submit button */}
                 <motion.button
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                   disabled={status === "sending"}
                   type="submit"
                   className={`
-                    relative overflow-hidden group
-                    w-full py-3 rounded-lg font-semibold text-sm 
-                    transition-all duration-300 mt-1
-                    ${status === "sending" 
-                      ? "bg-gray-600 cursor-not-allowed opacity-60" 
-                      : "bg-linear-to-r from-cyan-500 to-blue-600 hover:shadow-xl hover:shadow-cyan-500/20"
+                    group relative mt-1 w-full overflow-hidden rounded-lg
+                    py-3 text-sm font-semibold
+                    transition-all duration-300
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black
+                    ${
+                      status === "sending"
+                        ? "cursor-not-allowed bg-gray-600 opacity-60"
+                        : "bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-xl hover:shadow-cyan-500/20"
                     }
                   `}
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     {status === "sending" ? (
                       <>
-                        <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg
+                          className="h-4 w-4 animate-spin text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
                         Sending...
                       </>
@@ -489,14 +560,14 @@ export default function Contact() {
                       <>
                         <i className="fas fa-paper-plane text-xs" />
                         Send Message
-                        <i className="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform" />
+                        <i className="fas fa-arrow-right text-xs transition-transform group-hover:translate-x-1" />
                       </>
                     )}
                   </span>
-                  
+
                   {/* Button Hover Effect */}
                   {status !== "sending" && (
-                    <div className="absolute inset-0 bg-linear-to-r from-cyan-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                   )}
                 </motion.button>
               </form>
@@ -506,7 +577,7 @@ export default function Contact() {
       </motion.div>
 
       {/* Decorative Bottom Element */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-cyan-500/20 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
     </section>
   );
 }
