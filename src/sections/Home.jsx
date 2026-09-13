@@ -52,19 +52,24 @@ const Home = React.forwardRef((props, ref) => {
   // typing effect logic
   useEffect(() => {
     const current = roles[index];
-    const timeout = setTimeout(
-      () => {
-        if (!deleting && subIndex < current.length) setSubIndex((v) => v + 1);
-        else if (!deleting && subIndex === current.length)
-          setTimeout(() => setDeleting(true), 1200);
-        else if (deleting && subIndex > 0) setSubIndex((v) => v - 1);
-        else if (deleting && subIndex === 0) {
-          setDeleting(false);
-          setIndex((p) => (p + 1) % roles.length);
-        }
-      },
-      deleting ? 40 : 60,
-    ); // original typing speed
+
+    // Pause before deleting when the word is fully typed
+    const isFullWord = !deleting && subIndex === current.length;
+    const delay = isFullWord ? 1200 : deleting ? 40 : 60;
+
+    const timeout = setTimeout(() => {
+      if (!deleting && subIndex < current.length) {
+        setSubIndex((v) => v + 1);
+      } else if (isFullWord) {
+        setDeleting(true);
+      } else if (deleting && subIndex > 0) {
+        setSubIndex((v) => v - 1);
+      } else if (deleting && subIndex === 0) {
+        setDeleting(false);
+        setIndex((p) => (p + 1) % roles.length);
+      }
+    }, delay);
+
     return () => clearTimeout(timeout);
   }, [subIndex, deleting, index, roles]);
 

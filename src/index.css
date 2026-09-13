@@ -4,10 +4,6 @@
   box-sizing: border-box;
 }
 
-html {
-  /* scroll-behavior: smooth; Removed for Lenis compatibility */
-}
-
 body {
   font-family: "Poppins", sans-serif;
   margin: 0;
