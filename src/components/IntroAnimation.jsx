@@ -4,12 +4,9 @@ import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 
 gsap.registerPlugin(MorphSVGPlugin);
 
-export default function IntroAnimation({ onFinish }) {
-  const greetings = [
-    "Hii","Hello", "नमस्ते", "Hola",
-    "Hej", "Hallo", 
-  ];
+const greetings = ["Hii", "Hello", "नमस्ते", "Hola", "Hej", "Hallo"];
 
+export default function IntroAnimation({ onFinish }) {
   const [index, setIndex] = useState(0);
   const overlayRef = useRef(null);
   const greetingRef = useRef(null);
@@ -21,14 +18,14 @@ export default function IntroAnimation({ onFinish }) {
       gsap.fromTo(
         greetingRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.12 }
+        { opacity: 1, y: 0, duration: 0.12 },
       );
-      greetingTimer = setTimeout(() => setIndex(i => i + 1), 180);
+      greetingTimer = setTimeout(() => setIndex((i) => i + 1), 180);
     } else {
       gsap.fromTo(
         greetingRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.12 }
+        { opacity: 1, y: 0, duration: 0.12 },
       );
 
       greetingTimer = setTimeout(() => {
@@ -47,7 +44,7 @@ export default function IntroAnimation({ onFinish }) {
             morphSVG: "M0,0 L0,300 Q720,900 1440,300 L1440,0 Z",
             ease: "power4.inOut",
           },
-          "<"
+          "<",
         );
       }, 300);
     }

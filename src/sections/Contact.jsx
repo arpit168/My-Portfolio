@@ -62,7 +62,7 @@ export default function Contact() {
     const newErrors = {};
 
     required.forEach(
-      (f) => !formData[f].trim() && (newErrors[f] = "Fill this field")
+      (f) => !formData[f].trim() && (newErrors[f] = "Fill this field"),
     );
 
     if (needsBudget && !formData.budget.trim())
@@ -88,7 +88,7 @@ export default function Contact() {
           from_name: formData.name,
           reply_to: formData.email,
         },
-        PUBLIC_KEY
+        PUBLIC_KEY,
       );
 
       setStatus("success");
@@ -212,7 +212,11 @@ export default function Contact() {
                 alt="Illustration representing collaboration and building projects together"
                 className="relative w-48 rounded-2xl object-cover shadow-2xl xs:w-56 sm:w-72 md:w-80 lg:w-full"
                 animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 whileHover={{ scale: 1.02 }}
               />
 
@@ -233,7 +237,11 @@ export default function Contact() {
                 </h2>
               </div>
 
-              <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
+              <form
+                className="flex flex-col gap-4"
+                onSubmit={handleSubmit}
+                noValidate
+              >
                 {/* Name + Email side by side on larger screens */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {/* Name field */}
@@ -259,7 +267,7 @@ export default function Contact() {
                         onChange={handleChange}
                         aria-invalid={!!errors.name}
                         className={`w-full rounded-lg border bg-white/5 p-2.5 pl-10 text-sm text-white placeholder:text-gray-600 transition-all duration-300 focus:outline-none ${fieldClasses(
-                          "name"
+                          "name",
                         )}`}
                       />
                     </div>
@@ -301,7 +309,7 @@ export default function Contact() {
                         onChange={handleChange}
                         aria-invalid={!!errors.email}
                         className={`w-full rounded-lg border bg-white/5 p-2.5 pl-10 text-sm text-white placeholder:text-gray-600 transition-all duration-300 focus:outline-none ${fieldClasses(
-                          "email"
+                          "email",
                         )}`}
                       />
                     </div>
@@ -348,7 +356,7 @@ export default function Contact() {
                         onChange={handleChange}
                         aria-invalid={!!errors.service}
                         className={`w-full cursor-pointer appearance-none rounded-lg border bg-white/5 p-2.5 pl-10 pr-9 text-sm text-white transition-all duration-300 focus:outline-none ${fieldClasses(
-                          "service"
+                          "service",
                         )}`}
                       >
                         <option value="" disabled className="text-gray-400">
@@ -412,7 +420,7 @@ export default function Contact() {
                             onChange={handleChange}
                             aria-invalid={!!errors.budget}
                             className={`w-full rounded-lg border bg-white/5 p-2.5 pl-10 text-sm text-white placeholder:text-gray-600 transition-all duration-300 focus:outline-none ${fieldClasses(
-                              "budget"
+                              "budget",
                             )}`}
                           />
                         </div>
@@ -457,7 +465,7 @@ export default function Contact() {
                       onChange={handleChange}
                       aria-invalid={!!errors.idea}
                       className={`w-full resize-none rounded-lg border bg-white/5 p-2.5 pl-10 text-sm text-white placeholder:text-gray-600 transition-all duration-300 focus:outline-none ${fieldClasses(
-                        "idea"
+                        "idea",
                       )}`}
                     />
                   </div>
@@ -489,8 +497,8 @@ export default function Contact() {
                         status === "sending"
                           ? "border border-yellow-500/20 bg-yellow-500/15 text-yellow-300"
                           : status === "success"
-                          ? "border border-green-500/20 bg-green-500/15 text-green-300"
-                          : "border border-red-500/20 bg-red-500/15 text-red-300"
+                            ? "border border-green-500/20 bg-green-500/15 text-green-300"
+                            : "border border-red-500/20 bg-red-500/15 text-red-300"
                       }`}
                     >
                       <i
@@ -498,16 +506,16 @@ export default function Contact() {
                           status === "sending"
                             ? "fa-spinner fa-spin"
                             : status === "success"
-                            ? "fa-check-circle"
-                            : "fa-exclamation-circle"
+                              ? "fa-check-circle"
+                              : "fa-exclamation-circle"
                         } text-sm`}
                       />
                       <span>
                         {status === "sending"
                           ? "Sending..."
                           : status === "success"
-                          ? "Message sent! I'll get back to you soon. ✅"
-                          : "Something went wrong. Please try again. ❌"}
+                            ? "Message sent! I'll get back to you soon. ✅"
+                            : "Something went wrong. Please try again. ❌"}
                       </span>
                     </motion.div>
                   )}

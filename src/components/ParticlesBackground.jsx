@@ -11,7 +11,7 @@ export default function ParticlesBackground() {
     if (!ctx) return;
 
     const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
 
     let width = 0;
@@ -40,57 +40,61 @@ export default function ParticlesBackground() {
         : Math.max(24, Math.min(byArea, 70));
     };
 
-    class Particle {
-      constructor() {
-        this.radius = Math.random() * 2.2 + 0.8;
-        this.reset();
-      }
+    const createParticle = () => {
+      const radius = Math.random() * 2.2 + 0.8;
 
-      reset() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * config.maxSpeed;
-        this.vy = (Math.random() - 0.5) * config.maxSpeed;
-      }
+      const particle = {
+        radius,
+        x: 0,
+        y: 0,
+        vx: 0,
+        vy: 0,
+        reset() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * config.maxSpeed;
+          this.vy = (Math.random() - 0.5) * config.maxSpeed;
+        },
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
 
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
+          if (mouse.x !== null && mouse.y !== null) {
+            const dx = this.x - mouse.x;
+            const dy = this.y - mouse.y;
+            const dist = Math.hypot(dx, dy) || 1;
 
-        if (mouse.x !== null && mouse.y !== null) {
-          const dx = this.x - mouse.x;
-          const dy = this.y - mouse.y;
-          const dist = Math.hypot(dx, dy) || 1;
-
-          if (dist < mouse.radius) {
-            const force = (mouse.radius - dist) / mouse.radius;
-            this.x += (dx / dist) * force * 1.6;
-            this.y += (dy / dist) * force * 1.6;
+            if (dist < mouse.radius) {
+              const force = (mouse.radius - dist) / mouse.radius;
+              this.x += (dx / dist) * force * 1.6;
+              this.y += (dy / dist) * force * 1.6;
+            }
           }
-        }
 
-        if (this.x < -this.radius) this.x = width + this.radius;
-        if (this.x > width + this.radius) this.x = -this.radius;
-        if (this.y < -this.radius) this.y = height + this.radius;
-        if (this.y > height + this.radius) this.y = -this.radius;
-      }
+          if (this.x < -this.radius) this.x = width + this.radius;
+          if (this.x > width + this.radius) this.x = -this.radius;
+          if (this.y < -this.radius) this.y = height + this.radius;
+          if (this.y > height + this.radius) this.y = -this.radius;
+        },
+        draw() {
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = config.particleColor;
+          ctx.shadowBlur = config.glow;
+          ctx.shadowColor = config.particleColor;
+          ctx.fill();
+          ctx.restore();
+        },
+      };
 
-      draw() {
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = config.particleColor;
-        ctx.shadowBlur = config.glow;
-        ctx.shadowColor = config.particleColor;
-        ctx.fill();
-        ctx.restore();
-      }
-    }
+      particle.reset();
+      return particle;
+    };
 
     const createParticles = () => {
-      particles = Array.from(
-        { length: getParticleCount() },
-        () => new Particle()
+      particles = Array.from({ length: getParticleCount() }, () =>
+        createParticle(),
       );
     };
 
@@ -173,7 +177,9 @@ export default function ParticlesBackground() {
     render();
 
     window.addEventListener("resize", resizeCanvas);
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointermove", handlePointerMove, {
+      passive: true,
+    });
     window.addEventListener("mouseout", handleMouseOut);
     window.addEventListener("blur", clearMouse);
     document.addEventListener("visibilitychange", handleVisibilityChange);

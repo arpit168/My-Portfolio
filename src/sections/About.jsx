@@ -17,7 +17,6 @@ export default function About() {
 
       {/* Content container */}
       <div className="relative z-10 max-w-6xl w-full mx-auto px-6 md:px-10 lg:px-12 py-20 flex flex-col gap-12">
-
         {/* Profile header */}
         <motion.div
           className="flex flex-col md:flex-row items-center md:items-stretch gap-8"
@@ -50,7 +49,11 @@ export default function About() {
             </p>
 
             <p className="mt-4 text-gray-300 leading-relaxed text-base sm:text-lg max-w-2xl md:max-w-3xl">
-              I build scalable, modern applications with a strong focus on clean architecture, delightful UX, and performance. My toolkit spans Java, React, Node.js, javaScript, Tailwind CSS, and FastAPI—bringing ideas to life from concept to production with robust APIs and smooth interfaces.
+              I build scalable, modern applications with a strong focus on clean
+              architecture, delightful UX, and performance. My toolkit spans
+              Java, React, Node.js, javaScript, Tailwind CSS, and
+              FastAPI—bringing ideas to life from concept to production with
+              robust APIs and smooth interfaces.
             </p>
 
             {/* Quick stats */}
@@ -109,10 +112,13 @@ export default function About() {
               About Me
             </h3>
             <p className="text-gray-300 leading-relaxed text-base sm:text-lg">
-              I’m a Frontend , Backend and Web Developer — passionate about building fast, resilient applications and sharing coding insights on LinkedIn.
+              I’m a Frontend , Backend and Web Developer — passionate about
+              building fast, resilient applications and sharing coding insights
+              on LinkedIn.
             </p>
             <p className="mt-4 text-gray-400 text-base sm:text-lg">
-              I love turning ideas into scalable, user-friendly products that make an impact.
+              I love turning ideas into scalable, user-friendly products that
+              make an impact.
             </p>
           </motion.div>
         </div>

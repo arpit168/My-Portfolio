@@ -4,7 +4,7 @@ import { motion, useScroll, AnimatePresence } from "framer-motion";
 // Import project images (different versions for mobile and desktop)
 import for1 from "../assets/Forever1.png";
 import for2 from "../assets/Forever2.png";
-import crave1  from "../assets/Crave1.png";
+import crave1 from "../assets/Crave1.png";
 import crave2 from "../assets/Crave2.png";
 import harm1 from "../assets/Harm1.png";
 import harm2 from "../assets/Harm2.png";
@@ -27,10 +27,10 @@ const useMediaQuery = (query = "(max-width: 639px)") => {
     if (typeof window === "undefined") return;
 
     const mediaQueryList = window.matchMedia(query);
-    
+
     // Handler to update state when media query changes
     const handleChange = (event) => setMatches(event.matches);
-    
+
     // Add event listener (modern API with fallback for older browsers)
     if (mediaQueryList.addEventListener) {
       mediaQueryList.addEventListener("change", handleChange);
@@ -85,7 +85,7 @@ export default function Projects() {
         image: isMobile ? harm1 : harm2,
       },
     ],
-    [isMobile]
+    [isMobile],
   );
 
   // Track scroll progress through the projects section
@@ -95,15 +95,19 @@ export default function Projects() {
   });
 
   // Calculate scroll thresholds for switching between projects
-  const scrollThresholds = projects.map((_, index) => (index + 1) / projects.length);
+  const scrollThresholds = projects.map(
+    (_, index) => (index + 1) / projects.length,
+  );
 
   // Update active project based on scroll position
   React.useEffect(() => {
     const unsubscribe = scrollYProgress.onChange((progress) => {
-      const newIndex = scrollThresholds.findIndex((threshold) => progress <= threshold);
+      const newIndex = scrollThresholds.findIndex(
+        (threshold) => progress <= threshold,
+      );
       setActiveIndex(newIndex === -1 ? scrollThresholds.length - 1 : newIndex);
     });
-    
+
     return unsubscribe;
   }, [scrollYProgress, scrollThresholds]);
 
@@ -122,14 +126,17 @@ export default function Projects() {
     >
       {/* Sticky container that stays fixed while scrolling */}
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center">
-        
         {/* Section Header */}
-        <h2 className={`text-2xl sm:text-3xl font-semibold z-10 text-center px-4 ${isMobile ? "mt-4" : "mt-8"}`}>
+        <h2
+          className={`text-2xl sm:text-3xl font-semibold z-10 text-center px-4 ${isMobile ? "mt-4" : "mt-8"}`}
+        >
           My Work
         </h2>
 
         {/* Projects Container */}
-        <div className={`relative w-full flex-1 flex items-center justify-center px-4 ${isMobile ? "-mt-4" : ""}`}>
+        <div
+          className={`relative w-full flex-1 flex items-center justify-center px-4 ${isMobile ? "-mt-4" : ""}`}
+        >
           {projects.map((project, index) => (
             <ProjectItem
               key={project.title}
@@ -204,13 +211,14 @@ function ProjectItem({ project, isActive, isMobile }) {
           }}
           loading="lazy"
         />
-        
+
         {/* Gradient Overlay for Better Text Readability */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
             zIndex: 11,
-            background: "linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0) 40%)",
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0) 40%)",
           }}
           aria-hidden="true"
         />

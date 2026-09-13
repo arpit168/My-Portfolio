@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { FaPlay, FaPause } from "react-icons/fa";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 
 const MusicPlayer = () => {
   const playlist = [
@@ -112,7 +112,6 @@ const MusicPlayer = () => {
 
     // Dev-time diagnostics (optional; remove in prod)
     const onError = () => {
-
       console.warn("Audio error loading/playing:", audio.error);
     };
     audio.addEventListener("error", onError);
@@ -126,10 +125,16 @@ const MusicPlayer = () => {
       if (!audio) return;
       if (e.key === "ArrowUp") {
         e.preventDefault();
-        audio.volume = Math.min(1, Math.round((audio.volume + 0.05) * 100) / 100);
+        audio.volume = Math.min(
+          1,
+          Math.round((audio.volume + 0.05) * 100) / 100,
+        );
       } else if (e.key === "ArrowDown") {
         e.preventDefault();
-        audio.volume = Math.max(0, Math.round((audio.volume - 0.05) * 100) / 100);
+        audio.volume = Math.max(
+          0,
+          Math.round((audio.volume - 0.05) * 100) / 100,
+        );
       }
     };
     window.addEventListener("keydown", handleVolumeKeys, { passive: false });
@@ -161,11 +166,13 @@ const MusicPlayer = () => {
   };
 
   return (
-    <motion.div  drag
+    <motion.div
+      drag
       style={{
-       
-        borderRadius: "10px"
-      }}  className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-center space-y-2">
+        borderRadius: "10px",
+      }}
+      className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-center space-y-2"
+    >
       <p className="text-xs sm:text-sm text-gray-300 italic">{infoText}</p>
 
       <audio
@@ -186,7 +193,11 @@ const MusicPlayer = () => {
         }}
         aria-label={isPlaying ? "Pause music" : "Play music"}
       >
-        {isPlaying ? <FaPause size={16} className="sm:w-5 sm:h-5" /> : <FaPlay size={16} className="sm:w-5 sm:h-5" />}
+        {isPlaying ? (
+          <FaPause size={16} className="sm:w-5 sm:h-5" />
+        ) : (
+          <FaPlay size={16} className="sm:w-5 sm:h-5" />
+        )}
       </button>
     </motion.div>
   );

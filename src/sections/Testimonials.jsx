@@ -88,9 +88,7 @@ function Testimonials() {
             />
 
             {/* Testimonial Review Text */}
-            <p className="text-gray-200 italic mb-4">
-              "{testi.review}"
-            </p>
+            <p className="text-gray-200 italic mb-4">"{testi.review}"</p>
 
             {/* Name of the person */}
             <h3 className="text-lg font-semibold">{testi.name}</h3>
