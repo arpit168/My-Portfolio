@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import avatar from "../assets/avator.png";
@@ -7,12 +6,23 @@ import { FaYoutube, FaInstagram } from "react-icons/fa6";
 import ParticleBackground from "../components/ParticlesBackground";
 
 const socials = [
-  { Icon: FaYoutube, label: "YouTube", href: "https://www.youtube.com/@ArpitGupta-qo2fg" },
-  { Icon: FaLinkedinIn, label: "LinkedIn", href: "https://www.linkedin.com/in/arpit-gupta-4a3343331/" },
-  { Icon: FaInstagram, label: "Instagram", href: "https://www.instagram.com/anokha_arpit/?hl=en" },
+  {
+    Icon: FaYoutube,
+    label: "YouTube",
+    href: "https://www.youtube.com/@ArpitGupta-qo2fg",
+  },
+  {
+    Icon: FaLinkedinIn,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/arpit-gupta-4a3343331/",
+  },
+  {
+    Icon: FaInstagram,
+    label: "Instagram",
+    href: "https://www.instagram.com/anokha_arpit/?hl=en",
+  },
   { Icon: FaGithub, label: "GitHub", href: "https://github.com/arpit168" },
 ];
-
 
 const glowVariants = {
   initial: { scale: 1, y: 0, filter: "drop-shadow(0 0 0 rgba(0,0,0,0))" },
@@ -32,8 +42,8 @@ const glowVariants = {
 
 const Home = React.forwardRef((props, ref) => {
   const roles = useMemo(
-    () => ["Software Developer", "Web Developer","UI/UX Designer"],
-    []
+    () => ["Software Developer", "Web Developer", "UI/UX Designer"],
+    [],
   );
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
@@ -42,16 +52,19 @@ const Home = React.forwardRef((props, ref) => {
   // typing effect logic
   useEffect(() => {
     const current = roles[index];
-    const timeout = setTimeout(() => {
-      if (!deleting && subIndex < current.length) setSubIndex((v) => v + 1);
-      else if (!deleting && subIndex === current.length)
-        setTimeout(() => setDeleting(true), 1200);
-      else if (deleting && subIndex > 0) setSubIndex((v) => v - 1);
-      else if (deleting && subIndex === 0) {
-        setDeleting(false);
-        setIndex((p) => (p + 1) % roles.length);
-      }
-    }, deleting ? 40 : 60); // original typing speed
+    const timeout = setTimeout(
+      () => {
+        if (!deleting && subIndex < current.length) setSubIndex((v) => v + 1);
+        else if (!deleting && subIndex === current.length)
+          setTimeout(() => setDeleting(true), 1200);
+        else if (deleting && subIndex > 0) setSubIndex((v) => v - 1);
+        else if (deleting && subIndex === 0) {
+          setDeleting(false);
+          setIndex((p) => (p + 1) % roles.length);
+        }
+      },
+      deleting ? 40 : 60,
+    ); // original typing speed
     return () => clearTimeout(timeout);
   }, [subIndex, deleting, index, roles]);
 
@@ -215,7 +228,11 @@ const Home = React.forwardRef((props, ref) => {
             src={avatar}
             alt="Arpit Gupta avatar"
             className="absolute top-1/2 -translate-y-1/2 object-contain select-none pointer-events-none"
-            style={{ right: "-30px", width: "min(45vw, 780px)", maxHeight: "90vh" }}
+            style={{
+              right: "-30px",
+              width: "min(45vw, 780px)",
+              maxHeight: "90vh",
+            }}
             initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ delay: 1, duration: 1 }}

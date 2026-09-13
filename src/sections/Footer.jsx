@@ -17,8 +17,16 @@ import {
  */
 const socials = [
   // { Icon: FaYoutube, label: "YouTube", href: "" },
-  { Icon: FaLinkedinIn, label: "LinkedIn", href: "https://www.linkedin.com/in/arpit-gupta-4a3343331/" },
-  { Icon: FaInstagram, label: "Instagram", href: "https://www.instagram.com/anokha_arpit/?hl=en" },
+  {
+    Icon: FaLinkedinIn,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/arpit-gupta-4a3343331/",
+  },
+  {
+    Icon: FaInstagram,
+    label: "Instagram",
+    href: "https://www.instagram.com/anokha_arpit/?hl=en",
+  },
   { Icon: FaGithub, label: "GitHub", href: "https://github.com/arpit168" },
 ];
 
