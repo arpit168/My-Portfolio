@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from "react";
-import OverlayMenu from "./OverlayMenu";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { FiMenu } from "react-icons/fi";
-import Logo from "../assets/Logo.png"; // Adjust path
+import Logo from "../assets/logo.webp";
+
+const OverlayMenu = lazy(() => import("./OverlayMenu"));
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -75,7 +76,14 @@ export default function Navbar() {
       >
         {/* Logo */}
         <div className="flex items-center ">
-          <img src={Logo} alt="Logo" className="h-20 w-20" />
+          <img
+            src={Logo}
+            alt="Logo"
+            className="h-20 w-20"
+            width={80}
+            height={80}
+            decoding="async"
+          />
           <div className="text-lg sm:text-2xl font-bold text-white hidden sm:block">
             Arpit
           </div>
@@ -85,6 +93,8 @@ export default function Navbar() {
         <div className="block lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2">
           <button
             onClick={() => setMenuOpen(true)}
+            onMouseEnter={() => import("./OverlayMenu")}
+            onFocus={() => import("./OverlayMenu")}
             className="text-white text-2xl sm:text-3xl focus:outline-none hover:opacity-70 transition-opacity"
             aria-label="Open menu"
           >
@@ -103,7 +113,9 @@ export default function Navbar() {
         </div>
       </nav>
 
-      <OverlayMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      <Suspense fallback={null}>
+        <OverlayMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      </Suspense>
     </>
   );
 }

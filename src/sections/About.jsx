@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import p from "../assets/p.jpg";
+import p from "../assets/p.webp";
 import SpatialCard from "../components/SpatialCard";
 
 export default function About() {
@@ -37,6 +37,10 @@ export default function About() {
               src={p}
               alt="Arpit Gupta profile"
               className="w-full h-full object-cover object-center select-none block"
+              loading="lazy"
+              decoding="async"
+              width={320}
+              height={375}
             />
           </SpatialCard>
 
