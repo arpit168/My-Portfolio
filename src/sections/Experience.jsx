@@ -1,8 +1,10 @@
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+// Importing React for building UI components
+import React from "react";
+// Importing motion components and scroll hooks from Framer Motion for animations
+import { motion, useScroll, useTransform } from "framer-motion";
 import SpatialCard from "../components/SpatialCard";
 
-// Experience items data
+// Array of experience objects containing job details
 const experiences = [
   {
     role: "Web Developer",
@@ -10,7 +12,6 @@ const experiences = [
     duration: "2022",
     description:
       "Collaborated with a dynamic development team to create high-performance web applications, integrate AI-powered features, and enhance user engagement through modern, scalable solutions.",
-    highlight: "AI & Full Stack",
   },
   {
     role: "Web Development Learner",
@@ -18,7 +19,6 @@ const experiences = [
     duration: "2025 - Present",
     description:
       "Passionately exploring modern web technologies like HTML, CSS, JavaScript, React, and Node.js while building real-world projects that strengthen both frontend creativity and backend problem-solving skills.",
-    highlight: "React & Node Ecosystem",
   },
   {
     role: "Aspiring Web Developer",
@@ -26,276 +26,232 @@ const experiences = [
     duration: "2024 - Present",
     description:
       "Actively building projects using React, Node.js, and JavaScript while improving problem-solving skills and preparing for web development internships.",
-    highlight: "Ready for High-Impact Roles",
   },
 ];
 
-// Subcomponent for each Desktop Card with legal top-level hook calls
-function DesktopExperienceCard({ exp, idx, progress }) {
-  const cardThreshold = idx === 0 ? 0.15 : idx === 1 ? 0.5 : 0.82;
-  const stemScaleY = useTransform(
-    progress,
-    [cardThreshold - 0.1, cardThreshold],
-    [0, 1],
-  );
-  const stemOpacity = useTransform(
-    progress,
-    [cardThreshold - 0.1, cardThreshold],
-    [0.2, 1],
-  );
+// Reusable component to render each experience item with animations
+function ExperienceItem({ exp, idx, start, end, scrollYProgress, layout }) {
+  // Animates the size of the marker (dot) as user scrolls
+  const markerScale = useTransform(scrollYProgress, [start, end], [0, 1]);
+  // Animates the opacity of the marker
+  const markerOpacity = useTransform(scrollYProgress, [start, end], [0, 1]);
+  // Animates the opacity of the card
+  const cardOpacity = useTransform(scrollYProgress, [start, end], [0, 1]);
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.5, delay: idx * 0.15 }}
-      className="flex flex-col h-full"
-    >
-      <SpatialCard
-        maxTilt={12}
-        scale={1.02}
-        className="flex-1 flex flex-col justify-between bg-gray-900/70 hover:bg-gray-900/90 backdrop-blur-xl border border-gray-800 hover:border-[#1CD8D2]/50 rounded-2xl p-6 sm:p-7 shadow-xl hover:shadow-[0_12px_35px_-10px_rgba(28,216,210,0.25)] transition-all duration-300"
+  // Checks if card should be displayed above or below the timeline line
+  const isAbove = idx % 2 === 0;
+  // Animates vertical movement of cards for desktop layout
+  const cardY = useTransform(
+    scrollYProgress,
+    [start, end],
+    [isAbove ? 28 : -28, 0],
+  );
+  // Animates horizontal movement of cards for mobile layout
+  const cardX = useTransform(scrollYProgress, [start, end], [-24, 0]);
+
+  // Render for Desktop layout
+  if (layout === "desktop") {
+    return (
+      <div
+        className="relative flex-1 flex justify-center items-center min-w-0"
+        key={`${exp.company}-${exp.role}-${idx}`}
       >
-        <div>
-          {/* Badge / Year */}
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#1CD8D2]/15 text-[#1CD8D2] border border-[#1CD8D2]/30">
-              {exp.duration}
-            </span>
-            <span className="text-xs text-gray-400 tracking-wide font-medium">
-              0{idx + 1}
-            </span>
-          </div>
+        {/* Marker dot on the timeline */}
+        <motion.div
+          className="z-10 w-7 h-7 rounded-full bg-white shadow-[0_0_15px_rgba(28,216,210,0.8)] border-2 border-black"
+          style={{ scale: markerScale, opacity: markerOpacity }}
+        />
+        {/* Small vertical line above or below the marker */}
+        <motion.div
+          className={`absolute ${isAbove ? "-top-8" : "-bottom-8"} w-0.75 bg-gradient-to-b from-[#1CD8D2] to-white/50`}
+          style={{ height: 36, opacity: cardOpacity }}
+        />
+        {/* Experience card with role, company, duration, description */}
+        <motion.div
+          className={`absolute ${isAbove ? "bottom-12" : "top-12"} w-[300px] lg:w-[320px] max-w-[90vw]`}
+          style={{ opacity: cardOpacity, y: cardY }}
+          transition={{ duration: 0.4, delay: idx * 0.15 }}
+        >
+          <SpatialCard
+            maxTilt={12}
+            scale={1.03}
+            className="bg-gray-900/85 backdrop-blur-xl border border-gray-700/70 hover:border-[#1CD8D2]/60 rounded-xl p-6 sm:p-7 shadow-xl transition-all duration-300"
+          >
+            <h3 className="text-xl font-semibold text-white">{exp.role}</h3>
+            <p className="text-sm text-[#1CD8D2] font-medium mb-3">
+              {exp.company} | {exp.duration}
+            </p>
+            <p className="text-sm text-gray-300 leading-relaxed break-words">
+              {exp.description}
+            </p>
+          </SpatialCard>
+        </motion.div>
+      </div>
+    );
+  }
 
-          {/* Role & Company */}
-          <h3 className="text-xl font-bold text-white mb-1 group-hover:text-[#1CD8D2] transition-colors">
+  // Render for Mobile layout
+  return (
+    <div
+      key={`${exp.company}-${exp.role}-m-${idx}`}
+      className="relative flex items-start"
+    >
+      {/* Marker dot on mobile timeline */}
+      <motion.div
+        className="absolute -left-3.5 top-3 z-10 w-7 h-7 rounded-full bg-white shadow-[0_0_12px_rgba(28,216,210,0.8)] border-2 border-black"
+        style={{ scale: markerScale, opacity: markerOpacity }}
+      />
+      {/* Experience card (mobile version) */}
+      <motion.div
+        className="w-[85vw] max-w-sm ml-6"
+        style={{ opacity: cardOpacity, x: cardX }}
+        transition={{ duration: 0.4, delay: idx * 0.15 }}
+      >
+        <SpatialCard
+          maxTilt={8}
+          scale={1.02}
+          className="bg-gray-900/85 backdrop-blur-xl border border-gray-700/70 rounded-xl p-5 shadow-lg"
+        >
+          <h3 className="text-lg font-semibold break-words text-white">
             {exp.role}
           </h3>
-          <p className="text-sm font-semibold text-[#1CD8D2] mb-3">
-            {exp.company}
+          <p className="text-sm text-[#1CD8D2] mb-2 break-words font-medium">
+            {exp.company} | {exp.duration}
           </p>
-
-          {/* Description */}
-          <p className="text-sm text-gray-300 leading-relaxed">
+          <p className="text-sm text-gray-300 break-words leading-relaxed">
             {exp.description}
           </p>
-        </div>
-
-        {/* Footer highlight */}
-        <div className="mt-5 pt-3 border-t border-white/5 flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#1CD8D2]" />
-          <span className="text-xs font-medium text-gray-400">
-            {exp.highlight}
-          </span>
-        </div>
-      </SpatialCard>
-
-      {/* Vertical connector stem to timeline dot */}
-      <div className="flex justify-center items-center h-8">
-        <motion.div
-          style={{
-            scaleY: stemScaleY,
-            opacity: stemOpacity,
-          }}
-          className="w-0.5 h-full bg-gradient-to-b from-[#1CD8D2]/80 to-white origin-top"
-        />
-      </div>
-    </motion.div>
+        </SpatialCard>
+      </motion.div>
+    </div>
   );
 }
 
-// Subcomponent for each Desktop Timeline Node with legal top-level hook calls
-function DesktopTimelineNode({ idx, progress }) {
-  const nodeThreshold = idx === 0 ? 0.1 : idx === 1 ? 0.45 : 0.8;
-  const nodeScale = useTransform(
-    progress,
-    [nodeThreshold - 0.05, nodeThreshold + 0.05],
-    [0.75, 1.15],
-  );
-  const nodeOpacity = useTransform(
-    progress,
-    [nodeThreshold - 0.08, nodeThreshold],
-    [0.4, 1],
-  );
-
-  return (
-    <motion.div
-      style={{
-        scale: nodeScale,
-        opacity: nodeOpacity,
-      }}
-      className="relative flex items-center justify-center w-7 h-7 rounded-full bg-black border-2 border-white shadow-[0_0_15px_rgba(28,216,210,0.8)]"
-    >
-      <span className="w-2.5 h-2.5 rounded-full bg-[#1CD8D2]" />
-    </motion.div>
-  );
-}
-
+// Main Experience component
 export default function Experience() {
-  const containerRef = useRef(null);
+  const sceneRef = React.useRef(null); // Ref for the scrolling section
+  const [isMobile, setIsMobile] = React.useState(false); // State to track if device is mobile
 
-  // Scroll progress for smoothly drawing the timeline line across viewport
+  // Detect window size and set isMobile state
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Dynamic scene height - calibrated to be snappy without excessive dead space
+  const SCENE_HEIGHT_VH = isMobile
+    ? 100 * experiences.length * 0.9
+    : 100 * experiences.length * 0.75;
+
+  // Get scroll progress for animations
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start 75%", "end 60%"],
+    target: sceneRef,
+    offset: ["start start", "end end"],
   });
 
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 24,
-    restDelta: 0.001,
-  });
+  // Calculate thresholds for each experience card's animation start/end
+  const numExperiences = experiences.length;
+  const thresholds = React.useMemo(
+    () =>
+      Array.from(
+        { length: numExperiences },
+        (_, i) => (i + 1) / numExperiences,
+      ),
+    [numExperiences],
+  );
 
-  // Dynamic progress transforms
-  const lineWidth = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
-  const lineHeight = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
+  // Animate timeline line width (desktop) and height (mobile)
+  const lineWidth = useTransform(scrollYProgress, (v) => `${v * 100}%`);
+  const lineHeight = useTransform(scrollYProgress, (v) => `${v * 100}%`);
 
   return (
-    <section
-      id="experience"
-      ref={containerRef}
-      className="relative w-full bg-black text-white pt-16 sm:pt-20 lg:pt-24 pb-12 sm:pb-16 lg:pb-20 overflow-hidden"
-      aria-label="Experience & Journey"
-    >
-      {/* Ambient background glows */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <section id="experience" className="relative bg-black text-white">
+      {/* Ambient background glows for rich aesthetic */}
+      <div
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden="true"
+      >
         <div className="absolute top-1/3 left-1/4 -translate-x-1/2 w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-[#1CD8D2]/10 blur-[130px]" />
         <div className="absolute bottom-10 right-1/4 w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-[#00bf8f]/10 blur-[140px]" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-3 backdrop-blur-md border border-[#1CD8D2]/30 bg-[#1CD8D2]/10 text-[#1CD8D2]"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1CD8D2] animate-pulse" />
-            <span>Milestones & Growth</span>
-          </motion.div>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white"
-          >
-            My Experience
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-3 text-sm sm:text-base text-gray-400"
-          >
-            A chronological timeline of my hands-on developer journey, collaborative work, and continuous learning.
-          </motion.p>
-        </div>
-
-        {/* --- DESKTOP LAYOUT (lg & above) --- */}
-        <div className="hidden lg:block w-full">
-          {/* Experience Cards Grid */}
-          <div className="grid grid-cols-3 gap-6 xl:gap-8 items-stretch mb-6">
-            {experiences.map((exp, idx) => (
-              <DesktopExperienceCard
-                key={`${exp.company}-${idx}`}
-                exp={exp}
-                idx={idx}
-                progress={smoothProgress}
-              />
-            ))}
+      {/* Main container with dynamic height */}
+      <div
+        ref={sceneRef}
+        style={{ height: `${SCENE_HEIGHT_VH}vh`, minHeight: "120vh" }}
+        className="relative"
+      >
+        <div className="sticky top-0 h-screen flex flex-col justify-between overflow-hidden">
+          {/* Section Title */}
+          <div className="shrink-0 px-4 sm:px-6 pt-6 sm:pt-8 md:pt-10">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mt-3 sm:mt-5 text-center text-white">
+              Experience
+            </h2>
           </div>
 
-          {/* Horizontal Timeline Bar with Glowing Nodes */}
-          <div className="relative w-full max-w-6xl mx-auto px-6">
-            {/* Background base track */}
-            <div className="relative h-1.5 bg-white/15 rounded-full">
-              {/* Dynamic glowing progress track */}
-              <motion.div
-                className="absolute left-0 top-0 h-full bg-gradient-to-r from-[#1CD8D2] via-[#00bf8f] to-white rounded-full origin-left shadow-[0_0_12px_rgba(28,216,210,0.6)]"
-                style={{ width: lineWidth }}
-              />
-            </div>
-
-            {/* Glowing nodes aligned precisely under each column */}
-            <div className="absolute inset-x-6 top-1/2 -translate-y-1/2 flex justify-around pointer-events-none">
-              {experiences.map((exp, idx) => (
-                <DesktopTimelineNode
-                  key={`node-${exp.company}-${idx}`}
-                  idx={idx}
-                  progress={smoothProgress}
+          {/* Timeline container */}
+          <div className="flex-1 flex items-center justify-center px-4 sm:px-6 pb-6 sm:pb-8">
+            {/* Desktop Timeline */}
+            <div className="relative w-full max-w-7xl hidden md:block">
+              {/* Horizontal timeline line */}
+              <div className="relative h-1.5 bg-white/15 rounded-full overflow-hidden">
+                <motion.div
+                  className="absolute left-0 top-0 h-full bg-gradient-to-r from-[#1CD8D2] via-[#00bf8f] to-white rounded-full origin-left shadow-[0_0_12px_rgba(28,216,210,0.6)]"
+                  style={{ width: lineWidth }}
                 />
-              ))}
+              </div>
+
+              {/* Experience items mapped for desktop */}
+              <div className="relative flex justify-between mt-0">
+                {experiences.map((exp, idx) => {
+                  const start = idx === 0 ? 0 : thresholds[idx - 1];
+                  const end = thresholds[idx];
+                  return (
+                    <ExperienceItem
+                      key={`${exp.company}-${exp.role}-${idx}`}
+                      exp={exp}
+                      idx={idx}
+                      start={start}
+                      end={end}
+                      scrollYProgress={scrollYProgress}
+                      layout="desktop"
+                    />
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        </div>
 
-        {/* --- MOBILE & TABLET LAYOUT (< lg) --- */}
-        <div className="lg:hidden relative w-full max-w-xl mx-auto pl-6 sm:pl-8">
-          {/* Vertical Timeline Track */}
-          <div className="absolute left-2.5 sm:left-3.5 top-2 bottom-6 w-0.5 bg-white/15 rounded-full">
-            <motion.div
-              className="absolute left-0 top-0 w-full bg-gradient-to-b from-[#1CD8D2] via-[#00bf8f] to-white rounded-full origin-top shadow-[0_0_10px_rgba(28,216,210,0.6)]"
-              style={{ height: lineHeight }}
-            />
-          </div>
+            {/* Mobile Timeline */}
+            <div className="relative w-full max-w-md md:hidden py-4">
+              {/* Vertical timeline line */}
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-white/15 rounded-full overflow-hidden">
+                <motion.div
+                  className="absolute top-0 left-0 w-full bg-gradient-to-b from-[#1CD8D2] via-[#00bf8f] to-white rounded-full origin-top shadow-[0_0_10px_rgba(28,216,210,0.6)]"
+                  style={{ height: lineHeight }}
+                />
+              </div>
 
-          {/* Vertical Cards */}
-          <div className="flex flex-col gap-6 sm:gap-8">
-            {experiences.map((exp, idx) => (
-              <motion.div
-                key={`m-${exp.company}-${idx}`}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: idx * 0.12 }}
-                className="relative pl-6 sm:pl-8"
-              >
-                {/* Timeline node */}
-                <div className="absolute -left-[18px] sm:-left-[19px] top-6 z-10 w-5 h-5 rounded-full bg-black border-2 border-[#1CD8D2] flex items-center justify-center shadow-[0_0_10px_rgba(28,216,210,0.7)]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-white" />
-                </div>
-
-                <SpatialCard
-                  maxTilt={8}
-                  scale={1.015}
-                  className="bg-gray-900/80 backdrop-blur-xl border border-gray-800 hover:border-[#1CD8D2]/40 rounded-2xl p-5 sm:p-6 shadow-lg transition-colors"
-                >
-                  <div className="flex items-center justify-between mb-2.5">
-                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#1CD8D2]/15 text-[#1CD8D2] border border-[#1CD8D2]/30">
-                      {exp.duration}
-                    </span>
-                    <span className="text-xs text-gray-500 font-mono">
-                      0{idx + 1}
-                    </span>
-                  </div>
-
-                  <h3 className="text-lg sm:text-xl font-bold text-white mb-0.5">
-                    {exp.role}
-                  </h3>
-                  <p className="text-sm font-semibold text-[#1CD8D2] mb-2.5">
-                    {exp.company}
-                  </p>
-                  <p className="text-sm text-gray-300 leading-relaxed mb-3">
-                    {exp.description}
-                  </p>
-
-                  <div className="pt-2.5 border-t border-white/5 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#1CD8D2]" />
-                    <span className="text-xs text-gray-400 font-medium">
-                      {exp.highlight}
-                    </span>
-                  </div>
-                </SpatialCard>
-              </motion.div>
-            ))}
+              {/* Experience items mapped for mobile */}
+              <div className="relative flex flex-col gap-8 sm:gap-10 ml-6 sm:ml-8 mt-2 pb-16">
+                {experiences.map((exp, idx) => {
+                  const start = idx === 0 ? 0 : thresholds[idx - 1];
+                  const end = thresholds[idx];
+                  return (
+                    <ExperienceItem
+                      key={`${exp.company}-${exp.role}-m-${idx}`}
+                      exp={exp}
+                      idx={idx}
+                      start={start}
+                      end={end}
+                      scrollYProgress={scrollYProgress}
+                      layout="mobile"
+                    />
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>
