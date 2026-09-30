@@ -4,15 +4,12 @@ import { useState, useEffect } from "react";
 // Importing motion component from Framer Motion for animations
 import { motion, AnimatePresence } from "framer-motion";
 
-// Importing EmailJS SDK
-import emailjs from "@emailjs/browser";
-
 // Importing Particles Background (same as Home component)
 import ParticlesBackground from "../components/ParticlesBackground.jsx";
 import SpatialCard from "../components/SpatialCard.jsx";
 
 // Importing the contact image asset
-import Astra from "../assets/Astra.png";
+import Astra from "../assets/Astra.webp";
 
 // Reading EmailJS credentials from environment variables (Vite)
 const SERVICE_ID = import.meta.env.VITE_SERVICE_ID;
@@ -81,6 +78,7 @@ export default function Contact() {
     setStatus("sending");
 
     try {
+      const { default: emailjs } = await import("@emailjs/browser");
       await emailjs.send(
         SERVICE_ID,
         TEMPLATE_ID,
@@ -219,6 +217,10 @@ export default function Contact() {
                   ease: "easeInOut",
                 }}
                 whileHover={{ scale: 1.02 }}
+                loading="lazy"
+                decoding="async"
+                width={400}
+                height={400}
               />
 
               {/* Decorative Border */}
