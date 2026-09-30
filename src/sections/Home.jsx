@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import avatar from "../assets/avator.png";
+import avatar from "../assets/avator.webp";
 import {
   FaYoutube,
   FaLinkedinIn,
@@ -317,6 +317,10 @@ const Home = React.forwardRef((props, ref) => {
               alt="Arpit Gupta 3D Avatar"
               className="relative object-contain select-none pointer-events-none z-10 w-full max-h-[52vh] sm:max-h-[62vh] drop-shadow-[0_20px_45px_rgba(0,240,255,0.25)] animate-float-slow"
               draggable={false}
+              width={400}
+              height={600}
+              fetchPriority="high"
+              decoding="async"
             />
 
             {/* Floating 8D Spatial Badge 1: Frontend Tech */}

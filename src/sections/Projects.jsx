@@ -3,14 +3,14 @@ import { motion, useScroll, AnimatePresence } from "framer-motion";
 import SpatialCard from "../components/SpatialCard";
 
 // Import project images (different versions for mobile and desktop)
-import for1 from "../assets/Forever1.png";
-import for2 from "../assets/Forever2.png";
-import Health1 from "../assets/Health1.png";
-import Health2 from "../assets/Health2.png";
-import Inv1 from "../assets/Inv1.png";
-import Inv2 from "../assets/Inv2.png";
-import Resume1 from "../assets/Resume1.png";
-import Resume2 from "../assets/Resume2.png";
+import for1 from "../assets/Forever1.webp";
+import for2 from "../assets/Forever2.webp";
+import Health1 from "../assets/Health1.webp";
+import Health2 from "../assets/Health2.webp";
+import Inv1 from "../assets/Inv1.webp";
+import Inv2 from "../assets/Inv2.webp";
+import Resume1 from "../assets/Resume1.webp";
+import Resume2 from "../assets/Resume2.webp";
 
 /**
  * Custom hook to detect if the current viewport matches a media query
@@ -348,6 +348,7 @@ function ProjectItem({ project, isActive, isMobile }) {
           alt={project.title}
           className="w-full h-full object-cover object-top sm:object-center"
           loading="lazy"
+          decoding="async"
         />
 
         {/* Gentle vignette overlay for depth */}

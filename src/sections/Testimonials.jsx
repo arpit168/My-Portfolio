@@ -2,10 +2,10 @@
 import React from "react";
 
 // Importing image assets for the testimonials section
-import m1 from "../assets/m1.PNG"; // Male testimonial image 1
-import m2 from "../assets/m2.PNG"; // Male testimonial image 2
-import w1 from "../assets/w1.PNG"; // Female testimonial image 1
-import w2 from "../assets/w2.PNG"; // Female testimonial image 2
+import m1 from "../assets/m1.webp"; // Male testimonial image 1
+import m2 from "../assets/m2.webp"; // Male testimonial image 2
+import w1 from "../assets/w1.webp"; // Female testimonial image 1
+import w2 from "../assets/w2.webp"; // Female testimonial image 2
 
 // Importing Framer Motion for smooth animations
 import { motion } from "framer-motion";
@@ -52,16 +52,21 @@ function Testimonials() {
   return (
     // Section wrapper with styling
     <section
-      id="testimonials" // ID for navigation
-      className="relative min-h-screen bg-black text-white flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 py-16 sm:py-20"
-      // Makes this section full-screen height, black background, white text, centered content
+      id="testimonials"
+      className="relative w-full bg-black text-white flex flex-col items-center px-4 sm:px-6 md:px-8 pt-8 sm:pt-12 md:pt-14 pb-16 sm:pb-20 md:pb-24 overflow-hidden"
     >
+      {/* Subtle ambient lighting */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-40 bg-[#1CD8D2]/8 blur-[100px]" />
+      </div>
+
       {/* Animated Section Title */}
       <MH2
-        initial={{ opacity: 0, y: -50 }} // Start invisible & slightly above
-        animate={{ opacity: 1, y: 0 }} // Fade in & slide down
-        transition={{ duration: 0.6 }} // Animation duration is 0.6s
-        className="text-3xl sm:text-4xl font-bold mb-12 sm:mb-16" // Styling for title
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6 }}
+        className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-10 sm:mb-14 text-center text-white"
       >
         What People Say
       </MH2>
@@ -88,6 +93,9 @@ function Testimonials() {
                 alt={testi.name} // Accessibility
                 className="w-20 h-20 rounded-full border-2 border-[#1CD8D2]/60 mb-4 object-cover shadow-[0_0_15px_rgba(28,216,210,0.3)]"
                 loading="lazy" // Lazy load for performance
+                decoding="async"
+                width={80}
+                height={80}
               />
 
               {/* Testimonial Review Text */}

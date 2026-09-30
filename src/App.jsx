@@ -1,17 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import IntroAnimation from "./components/IntroAnimation";
 import Navbar from "./components/Navbar";
 import CustomCursor from "./components/CustomCursor";
 import Home from "./sections/Home";
-import About from "./sections/About";
-import Skills from "./sections/Skills";
-import Projects from "./sections/Projects";
-import Experience from "./sections/Experience";
-import Testimonials from "./sections/Testimonials";
-import Contact from "./sections/Contact";
-import Footer from "./sections/Footer";
 import ReactLenis, { useLenis } from "lenis/react";
-import { useEffect } from "react";
+
+// Lazy-loaded below-the-fold sections
+const About = lazy(() => import("./sections/About"));
+const Skills = lazy(() => import("./sections/Skills"));
+const Projects = lazy(() => import("./sections/Projects"));
+const Experience = lazy(() => import("./sections/Experience"));
+const Testimonials = lazy(() => import("./sections/Testimonials"));
+const Contact = lazy(() => import("./sections/Contact"));
+const Footer = lazy(() => import("./sections/Footer"));
+
+function SectionFallback({ id, minHeight = "min-h-screen" }) {
+  return (
+    <div
+      id={id}
+      className={`w-full ${minHeight} bg-black`}
+      aria-hidden="true"
+    />
+  );
+}
 
 function AnchorScroller() {
   const lenis = useLenis();
@@ -39,6 +50,26 @@ function AnchorScroller() {
 export default function App() {
   const [introDone, setIntroDone] = useState(false);
 
+  // Idly prefetch below-the-fold chunks after initial load so scrolling is instantaneous
+  useEffect(() => {
+    const prefetch = () => {
+      import("./sections/About");
+      import("./sections/Skills");
+      import("./sections/Projects");
+      import("./sections/Experience");
+      import("./sections/Testimonials");
+      import("./sections/Contact");
+      import("./sections/Footer");
+    };
+    if (typeof window !== "undefined") {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(prefetch);
+      } else {
+        setTimeout(prefetch, 250);
+      }
+    }
+  }, []);
+
   return (
     <div className="relative animated-gradient text-white">
       <ReactLenis
@@ -63,13 +94,27 @@ export default function App() {
         {/* Homepage always present (masked reveal) */}
         <Home introDone={introDone} />
 
-        <About />
-        <Skills />
-        <Projects />
-        <Experience />
-        <Testimonials />
-        <Contact />
-        <Footer />
+        <Suspense fallback={<SectionFallback id="about" />}>
+          <About />
+        </Suspense>
+        <Suspense fallback={<SectionFallback id="skills" />}>
+          <Skills />
+        </Suspense>
+        <Suspense fallback={<SectionFallback id="projects" />}>
+          <Projects />
+        </Suspense>
+        <Suspense fallback={<SectionFallback id="experience" minHeight="min-h-[500px]" />}>
+          <Experience />
+        </Suspense>
+        <Suspense fallback={<SectionFallback id="testimonials" minHeight="min-h-[500px]" />}>
+          <Testimonials />
+        </Suspense>
+        <Suspense fallback={<SectionFallback id="contact" />}>
+          <Contact />
+        </Suspense>
+        <Suspense fallback={<SectionFallback id="footer" minHeight="min-h-[250px]" />}>
+          <Footer />
+        </Suspense>
       </ReactLenis>
     </div>
   );
