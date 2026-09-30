@@ -9,6 +9,7 @@ import w2 from "../assets/w2.PNG"; // Female testimonial image 2
 
 // Importing Framer Motion for smooth animations
 import { motion } from "framer-motion";
+import SpatialCard from "../components/SpatialCard";
 
 // Creating shorter variables for motion components to make code cleaner
 const MH2 = motion.h2; // Animated <h2> tag
@@ -73,28 +74,31 @@ function Testimonials() {
             key={testi.name + idx} // Unique key for React rendering
             initial={{ opacity: 0, y: 50 }} // Start invisible & slightly below
             whileInView={{ opacity: 1, y: 0 }} // Animate when in viewport
-            transition={{ duration: 0.5, delay: idx * 0.2 }} // Stagger effect based on index
+            transition={{ duration: 0.5, delay: idx * 0.15 }} // Stagger effect based on index
             viewport={{ once: true }} // Animate only the first time it's visible
-            className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 flex flex-col items-center text-center transform transition duration-500 hover:scale-105 hover:-rotate-1"
-            // Glass effect card, rounded corners, hover animation
           >
-            {/* Person Image */}
-            <img
-              src={testi.image} // Image from array
-              alt={testi.name} // Accessibility
-              className="w-20 h-20 rounded-full border-2 border-white/40 mb-4 object-cover"
-              // Circle image with border
-              loading="lazy" // Lazy load for performance
-            />
+            <SpatialCard
+              maxTilt={16}
+              scale={1.03}
+              className="bg-white/10 backdrop-blur-lg border border-white/20 hover:border-[#1CD8D2]/40 rounded-2xl p-6 flex flex-col items-center text-center shadow-xl transition-colors h-full"
+            >
+              {/* Person Image */}
+              <img
+                src={testi.image} // Image from array
+                alt={testi.name} // Accessibility
+                className="w-20 h-20 rounded-full border-2 border-[#1CD8D2]/60 mb-4 object-cover shadow-[0_0_15px_rgba(28,216,210,0.3)]"
+                loading="lazy" // Lazy load for performance
+              />
 
-            {/* Testimonial Review Text */}
-            <p className="text-gray-200 italic mb-4">"{testi.review}"</p>
+              {/* Testimonial Review Text */}
+              <p className="text-gray-200 italic mb-4">"{testi.review}"</p>
 
-            {/* Name of the person */}
-            <h3 className="text-lg font-semibold">{testi.name}</h3>
+              {/* Name of the person */}
+              <h3 className="text-lg font-semibold text-white">{testi.name}</h3>
 
-            {/* Their role/job title */}
-            <p className="text-sm text-gray-400">{testi.role}</p>
+              {/* Their role/job title */}
+              <p className="text-sm text-[#1CD8D2]">{testi.role}</p>
+            </SpatialCard>
           </MDiv>
         ))}
       </div>
