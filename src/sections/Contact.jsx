@@ -9,6 +9,7 @@ import emailjs from "@emailjs/browser";
 
 // Importing Particles Background (same as Home component)
 import ParticlesBackground from "../components/ParticlesBackground.jsx";
+import SpatialCard from "../components/SpatialCard.jsx";
 
 // Importing the contact image asset
 import Astra from "../assets/Astra.png";
@@ -227,7 +228,11 @@ export default function Contact() {
 
           {/* Right Side Contact Form */}
           <motion.div variants={itemVariants} className="w-full lg:w-[58%]">
-            <div className="rounded-2xl border border-white/10 bg-linear-to-br from-white/8 via-white/4 to-transparent p-5 shadow-2xl backdrop-blur-xl sm:p-7 lg:p-8">
+            <SpatialCard
+              maxTilt={8}
+              scale={1.01}
+              className="rounded-2xl border border-white/10 hover:border-cyan-500/40 bg-linear-to-br from-white/8 via-white/4 to-transparent p-5 shadow-2xl backdrop-blur-xl sm:p-7 lg:p-8 transition-colors"
+            >
               <div className="mb-6 flex items-center gap-2.5">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-linear-to-r from-cyan-500 to-blue-500">
                   <i className="fas fa-paper-plane text-sm text-white" />
@@ -579,7 +584,7 @@ export default function Contact() {
                   )}
                 </motion.button>
               </form>
-            </div>
+            </SpatialCard>
           </motion.div>
         </div>
       </motion.div>

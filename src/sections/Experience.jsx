@@ -2,6 +2,7 @@
 import React from "react";
 // Importing motion components and scroll hooks from Framer Motion for animations
 import { motion, useScroll, useTransform } from "framer-motion";
+import SpatialCard from "../components/SpatialCard";
 
 // Array of experience objects containing job details
 const experiences = [
@@ -67,19 +68,25 @@ function ExperienceItem({ exp, idx, start, end, scrollYProgress, layout }) {
           style={{ height: 40, opacity: cardOpacity }}
         />
         {/* Experience card with role, company, duration, description */}
-        <motion.article
-          className={`absolute ${isAbove ? "bottom-12" : "top-12"} bg-gray-900/80 backdrop-blur border border-gray-700/70 rounded-xl p-7 w-[320px] shadow-lg`}
+        <motion.div
+          className={`absolute ${isAbove ? "bottom-12" : "top-12"} w-[320px]`}
           style={{ opacity: cardOpacity, y: cardY, maxWidth: "90vw" }}
           transition={{ duration: 0.4, delay: idx * 0.15 }}
         >
-          <h3 className="text-xl font-semibold">{exp.role}</h3>
-          <p className="text-md text-gray-400 mb-3">
-            {exp.company} | {exp.duration}
-          </p>
-          <p className="text-md text-gray-300 weap-break-words">
-            {exp.description}
-          </p>
-        </motion.article>
+          <SpatialCard
+            maxTilt={14}
+            scale={1.04}
+            className="bg-gray-900/80 backdrop-blur border border-gray-700/70 hover:border-[#1CD8D2]/40 rounded-xl p-7 shadow-lg transition-colors"
+          >
+            <h3 className="text-xl font-semibold text-white">{exp.role}</h3>
+            <p className="text-md text-[#1CD8D2] font-medium mb-3">
+              {exp.company} | {exp.duration}
+            </p>
+            <p className="text-md text-gray-300 break-words">
+              {exp.description}
+            </p>
+          </SpatialCard>
+        </motion.div>
       </div>
     );
   }
@@ -96,19 +103,27 @@ function ExperienceItem({ exp, idx, start, end, scrollYProgress, layout }) {
         style={{ scale: markerScale, opacity: markerOpacity }}
       />
       {/* Experience card (mobile version) */}
-      <motion.article
-        className="bg-gray-900/80 backdrop-blur border border-gray-700/70 rounded-xl p-5 w-[90vw] max-w-sm ml-6 shadow-lg"
+      <motion.div
+        className="w-[90vw] max-w-sm ml-6"
         style={{ opacity: cardOpacity, x: cardX }}
         transition={{ duration: 0.4, delay: idx * 0.15 }}
       >
-        <h3 className="text-lg font-semibold wrap-break-words">{exp.role}</h3>
-        <p className="text-sm text-gray-400 mb-2 wrap-break-words">
-          {exp.company} | {exp.duration}
-        </p>
-        <p className="text-sm text-gray-300 wrap-break-words">
-          {exp.description}
-        </p>
-      </motion.article>
+        <SpatialCard
+          maxTilt={10}
+          scale={1.02}
+          className="bg-gray-900/80 backdrop-blur border border-gray-700/70 rounded-xl p-5 shadow-lg"
+        >
+          <h3 className="text-lg font-semibold wrap-break-words text-white">
+            {exp.role}
+          </h3>
+          <p className="text-sm text-[#1CD8D2] mb-2 wrap-break-words">
+            {exp.company} | {exp.duration}
+          </p>
+          <p className="text-sm text-gray-300 wrap-break-words">
+            {exp.description}
+          </p>
+        </SpatialCard>
+      </motion.div>
     </div>
   );
 }

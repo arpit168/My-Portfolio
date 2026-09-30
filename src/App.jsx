@@ -10,7 +10,6 @@ import Experience from "./sections/Experience";
 import Testimonials from "./sections/Testimonials";
 import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
-import MusicPlayer from "./components/MusicPlayer";
 import ReactLenis, { useLenis } from "lenis/react";
 import { useEffect } from "react";
 
@@ -24,7 +23,10 @@ function AnchorScroller() {
       const href = target.getAttribute("href");
       if (href && href.startsWith("#") && lenis) {
         e.preventDefault();
-        lenis.scrollTo(href);
+        lenis.scrollTo(href, {
+          duration: 1.4,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        });
       }
     };
     document.addEventListener("click", handleAnchorClick);
@@ -42,20 +44,19 @@ export default function App() {
       <ReactLenis
         root
         options={{
-          lerp: 0.1,
-          duration: 1.2,
+          lerp: 0.085,
+          wheelMultiplier: 1.0,
+          touchMultiplier: 1.0,
+          smoothWheel: true,
+          syncTouch: false,
           orientation: "vertical",
           gestureOrientation: "vertical",
-          smoothWheel: true,
-          wheelMultiplier: 1,
-          smoothTouch: false,
-          touchMultiplier: 2,
+          autoResize: true,
         }}
       >
         <AnchorScroller />
         <CustomCursor />
         <Navbar />
-        <MusicPlayer />
         {/* Intro always on top until it finishes */}
         {!introDone && <IntroAnimation onFinish={() => setIntroDone(true)} />}
 

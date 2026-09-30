@@ -1,5 +1,10 @@
 import React, { useEffect, useRef } from "react";
 
+/**
+ * ParticlesBackground - 3D Spatial Particle Universe
+ * Renders particles in 3D coordinate space (x, y, z) with perspective projection,
+ * spatial constellations, and interactive depth response.
+ */
 export default function ParticlesBackground() {
   const canvasRef = useRef(null);
 
@@ -17,90 +22,91 @@ export default function ParticlesBackground() {
     let width = 0;
     let height = 0;
     let animationId = 0;
+    let isVisible = true;
     let paused = false;
     let particles = [];
 
-    const mouse = {
-      x: null,
-      y: null,
-      radius: 110,
-    };
-
-    const config = {
-      particleColor: "rgba(255,255,255,0.85)",
-      maxSpeed: reducedMotion ? 0.18 : 0.45,
-      linkDistance: reducedMotion ? 85 : 120,
-      glow: reducedMotion ? 6 : 10,
-    };
+    // Camera & Mouse 3D rotation state
+    const targetRot = { x: 0, y: 0 };
+    const curRot = { x: 0, y: 0 };
+    const fov = 420; // Perspective depth
 
     const getParticleCount = () => {
-      const byArea = Math.floor((width * height) / 35000);
+      const byArea = Math.floor((width * height) / 28000);
       return reducedMotion
-        ? Math.max(14, Math.min(byArea, 28))
-        : Math.max(24, Math.min(byArea, 70));
+        ? Math.max(18, Math.min(byArea, 35))
+        : Math.max(35, Math.min(byArea, 85));
     };
 
     const createParticle = () => {
-      const radius = Math.random() * 2.2 + 0.8;
+      const spreadX = width * 1.2;
+      const spreadY = height * 1.2;
+      const spreadZ = 700;
 
-      const particle = {
-        radius,
-        x: 0,
-        y: 0,
-        vx: 0,
-        vy: 0,
-        reset() {
-          this.x = Math.random() * width;
-          this.y = Math.random() * height;
-          this.vx = (Math.random() - 0.5) * config.maxSpeed;
-          this.vy = (Math.random() - 0.5) * config.maxSpeed;
-        },
+      return {
+        x: (Math.random() - 0.5) * spreadX,
+        y: (Math.random() - 0.5) * spreadY,
+        z: Math.random() * spreadZ - 200,
+        baseRadius: Math.random() * 2 + 1,
+        vx: (Math.random() - 0.5) * (reducedMotion ? 0.2 : 0.5),
+        vy: (Math.random() - 0.5) * (reducedMotion ? 0.2 : 0.5),
+        vz: (Math.random() - 0.5) * (reducedMotion ? 0.3 : 0.8),
+        colorType: Math.random(),
+
         update() {
           this.x += this.vx;
           this.y += this.vy;
+          this.z += this.vz;
 
-          if (mouse.x !== null && mouse.y !== null) {
-            const dx = this.x - mouse.x;
-            const dy = this.y - mouse.y;
-            const dist = Math.hypot(dx, dy) || 1;
-
-            if (dist < mouse.radius) {
-              const force = (mouse.radius - dist) / mouse.radius;
-              this.x += (dx / dist) * force * 1.6;
-              this.y += (dy / dist) * force * 1.6;
-            }
-          }
-
-          if (this.x < -this.radius) this.x = width + this.radius;
-          if (this.x > width + this.radius) this.x = -this.radius;
-          if (this.y < -this.radius) this.y = height + this.radius;
-          if (this.y > height + this.radius) this.y = -this.radius;
+          // Wrap boundaries in 3D space
+          const halfW = spreadX / 2;
+          const halfH = spreadY / 2;
+          if (this.x < -halfW) this.x = halfW;
+          if (this.x > halfW) this.x = -halfW;
+          if (this.y < -halfH) this.y = halfH;
+          if (this.y > halfH) this.y = -halfH;
+          if (this.z < -250) this.z = spreadZ - 250;
+          if (this.z > spreadZ - 250) this.z = -250;
         },
-        draw() {
-          ctx.save();
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          ctx.fillStyle = config.particleColor;
-          ctx.shadowBlur = config.glow;
-          ctx.shadowColor = config.particleColor;
-          ctx.fill();
-          ctx.restore();
+
+        project() {
+          // Rotate around X and Y axes
+          const cosY = Math.cos(curRot.y);
+          const sinY = Math.sin(curRot.y);
+          const cosX = Math.cos(curRot.x);
+          const sinX = Math.sin(curRot.x);
+
+          // Apply rotation
+          const x1 = this.x * cosY - this.z * sinY;
+          const z1 = this.z * cosY + this.x * sinY;
+
+          const y2 = this.y * cosX - z1 * sinX;
+          const z2 = z1 * cosX + this.y * sinX;
+
+          // 3D Perspective calculation
+          const scale = fov / (fov + z2 + 300);
+          if (scale <= 0) return null;
+
+          const projX = width / 2 + x1 * scale;
+          const projY = height / 2 + y2 * scale;
+          const radius = Math.max(0.5, this.baseRadius * scale);
+          const alpha = Math.min(1, Math.max(0.12, (z2 + 300) / 800));
+
+          return {
+            x: projX,
+            y: projY,
+            z: z2,
+            scale,
+            radius,
+            alpha,
+            colorType: this.colorType,
+          };
         },
       };
-
-      particle.reset();
-      return particle;
-    };
-
-    const createParticles = () => {
-      particles = Array.from({ length: getParticleCount() }, () =>
-        createParticle(),
-      );
     };
 
     const resizeCanvas = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
       width = window.innerWidth;
       height = window.innerHeight;
 
@@ -110,88 +116,121 @@ export default function ParticlesBackground() {
       canvas.style.height = `${height}px`;
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      createParticles();
+
+      particles = Array.from({ length: getParticleCount() }, () =>
+        createParticle(),
+      );
     };
 
-    const drawLinks = () => {
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i];
-          const b = particles[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const dist = Math.hypot(dx, dy);
-
-          if (dist < config.linkDistance) {
-            const opacity = (1 - dist / config.linkDistance) * 0.55;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(255,255,255,${opacity})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
-      }
+    const handlePointerMove = (e) => {
+      const normX = (e.clientX / width - 0.5) * 2;
+      const normY = (e.clientY / height - 0.5) * 2;
+      targetRot.y = normX * 0.18;
+      targetRot.x = -normY * 0.18;
     };
 
     const render = () => {
       if (paused) return;
 
+      // Smooth camera interpolation
+      curRot.x += (targetRot.x - curRot.x) * 0.05;
+      curRot.y += (targetRot.y - curRot.y) * 0.05;
+
       ctx.clearRect(0, 0, width, height);
 
-      for (const particle of particles) particle.update();
-      drawLinks();
-      for (const particle of particles) particle.draw();
+      // Update and project all particles
+      const projected = [];
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        const p = particles[i].project();
+        if (p) projected.push(p);
+      }
 
-      animationId = requestAnimationFrame(render);
-    };
+      // Sort by depth (Z-buffer order)
+      projected.sort((a, b) => b.z - a.z);
 
-    const handlePointerMove = (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    };
+      // Draw 3D spatial connections
+      const maxConnectDist = reducedMotion ? 75 : 110;
+      for (let i = 0; i < projected.length; i++) {
+        const a = projected[i];
+        for (let j = i + 1; j < projected.length; j++) {
+          const b = projected[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dist = Math.hypot(dx, dy);
 
-    const clearMouse = () => {
-      mouse.x = null;
-      mouse.y = null;
-    };
+          if (dist < maxConnectDist) {
+            const lineAlpha =
+              (1 - dist / maxConnectDist) * a.alpha * b.alpha * 0.45;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            // Gradient spatial color
+            ctx.strokeStyle = `rgba(28, 216, 210, ${lineAlpha})`;
+            ctx.lineWidth = Math.min(a.scale, b.scale) * 1.2;
+            ctx.stroke();
+          }
+        }
+      }
 
-    const handleMouseOut = (e) => {
-      if (!e.relatedTarget && !e.toElement) {
-        clearMouse();
+      // Draw projected glowing particles
+      for (let i = 0; i < projected.length; i++) {
+        const p = projected[i];
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+
+        // 8D Neon cyber color palette
+        const color =
+          p.colorType > 0.6
+            ? `rgba(28, 216, 210, ${p.alpha})`
+            : p.colorType > 0.3
+              ? `rgba(0, 255, 128, ${p.alpha})`
+              : `rgba(168, 85, 247, ${p.alpha * 0.9})`;
+
+        ctx.fillStyle = color;
+        ctx.shadowBlur = Math.min(6, p.scale * 4);
+        ctx.shadowColor = color;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      if (isVisible) {
+        animationId = requestAnimationFrame(render);
       }
     };
 
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        paused = true;
-        cancelAnimationFrame(animationId);
-      } else {
-        paused = false;
-        render();
-      }
-    };
-
-    resizeCanvas();
-    render();
+    // Pause heavy 3D particle calculations when user scrolls away from Home
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const nowVisible = entry.isIntersecting;
+        if (nowVisible !== isVisible) {
+          isVisible = nowVisible;
+          if (isVisible) {
+            cancelAnimationFrame(animationId);
+            animationId = requestAnimationFrame(render);
+          } else {
+            cancelAnimationFrame(animationId);
+          }
+        }
+      },
+      { threshold: [0, 0.05] },
+    );
+    observer.observe(canvas);
 
     window.addEventListener("resize", resizeCanvas);
     window.addEventListener("pointermove", handlePointerMove, {
       passive: true,
     });
-    window.addEventListener("mouseout", handleMouseOut);
-    window.addEventListener("blur", clearMouse);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    resizeCanvas();
+    animationId = requestAnimationFrame(render);
 
     return () => {
-      paused = true;
+      observer.disconnect();
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resizeCanvas);
       window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("mouseout", handleMouseOut);
-      window.removeEventListener("blur", clearMouse);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
@@ -199,7 +238,7 @@ export default function ParticlesBackground() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="fixed inset-0 w-full h-full pointer-events-none z-0"
+      className="pointer-events-none absolute inset-0 z-0 h-full w-full opacity-80"
     />
   );
 }
