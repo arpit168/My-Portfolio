@@ -209,8 +209,8 @@ const Home = React.forwardRef((props, ref) => {
 
             {/* Secondary Glassmorphic CTA */}
             <a
-              href="/Arpit_Gupta_Resume_1.pdf"
-              download
+              href="/Arpit_Gupta-resume.pdf"
+              download="Arpit_Gupta-resume.pdf"
               className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full font-medium text-sm sm:text-base tracking-wide text-white/95 bg-white/10 hover:bg-white/15 backdrop-blur-xl border border-white/15 hover:border-white/30 shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
             >
               <FaDownload className="w-3.5 h-3.5 text-[#1CD8D2] transition-transform duration-300 group-hover:-translate-y-0.5" />
