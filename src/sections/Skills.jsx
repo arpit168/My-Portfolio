@@ -323,45 +323,35 @@ export default function Skills() {
       {/* Section Header */}
       <div className="relative z-10 text-center max-w-3xl mx-auto mb-10 flex flex-col items-center">
         {/* 8D Spatial Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
+        <div
+          data-aos="fade-down"
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-3 backdrop-blur-md bg-white/5 border border-[#1cd8d2]/30 text-[#1cd8d2] shadow-[0_0_20px_rgba(28,216,210,0.25)]"
         >
           <span className="w-2 h-2 rounded-full bg-[#1cd8d2] animate-ping" />
           <span>8D Tech Stack Matrix</span>
-        </motion.div>
+        </div>
 
         {/* Gradient Title */}
-        <motion.h2
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          viewport={{ once: true }}
+        <h2
+          data-aos="fade-up"
           className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#1cd8d2] via-[#00bf8f] to-[#302b63]"
         >
           Skills & Technologies
-        </motion.h2>
+        </h2>
 
-        <motion.p
-          initial={{ opacity: 0, y: -10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          viewport={{ once: true }}
+        <p
+          data-aos="fade-up"
+          data-aos-delay="100"
           className="mt-3 text-base sm:text-lg text-gray-300 max-w-2xl"
         >
           Interactive spatial overview of my core developing toolkit, modern
           frameworks, and developer ecosystems.
-        </motion.p>
+        </p>
 
         {/* Interactive Category Filter Pills */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          viewport={{ once: true }}
+        <div
+          data-aos="zoom-in"
+          data-aos-delay="200"
           className="flex flex-wrap items-center justify-center gap-2 mt-8 p-1.5 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10"
         >
           {CATEGORIES.map((cat) => {
@@ -388,14 +378,14 @@ export default function Skills() {
               </button>
             );
           })}
-        </motion.div>
+        </div>
       </div>
 
       {/* 8D Spatial Cards Grid */}
       <div className="relative z-10 w-full max-w-6xl mx-auto mb-16 px-2">
         <motion.div
           layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4"
         >
           <AnimatePresence mode="popLayout">
             {filteredSkills.map((skill, index) => (
@@ -410,79 +400,85 @@ export default function Skills() {
                 onMouseLeave={() => setHoveredSkill(null)}
                 className="h-full"
               >
-                <SpatialCard
-                  maxTilt={12}
-                  scale={1.03}
-                  glareColor={`${skill.glowColor}`}
-                  className="h-full p-5 rounded-2xl bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl border transition-all duration-300 flex flex-col justify-between group cursor-pointer"
-                  style={{
-                    borderColor:
-                      hoveredSkill === skill.name
-                        ? skill.color
-                        : "rgba(255, 255, 255, 0.12)",
-                    boxShadow:
-                      hoveredSkill === skill.name
-                        ? `0 15px 35px -10px ${skill.glowColor}, 0 0 20px -2px ${skill.color}44`
-                        : "0 10px 25px -5px rgba(0, 0, 0, 0.5)",
-                  }}
+                <div
+                  data-aos="zoom-in-up"
+                  data-aos-delay={(index % 5) * 100}
+                  className="h-full"
                 >
-                  <div>
-                    {/* Top Row: Icon + Level Badge */}
-                    <div className="flex items-center justify-between gap-3 mb-4">
-                      {/* 3D Glowing Brand Icon */}
-                      <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl transition-transform duration-300 group-hover:scale-110 border"
-                        style={{
-                          color: skill.color,
-                          backgroundColor: `${skill.color}15`,
-                          borderColor: `${skill.color}35`,
-                          boxShadow: `0 0 20px ${skill.color}25`,
-                        }}
-                      >
-                        {skill.icon}
+                  <SpatialCard
+                    maxTilt={12}
+                    scale={1.03}
+                    glareColor={`${skill.glowColor}`}
+                    className="h-full p-4 rounded-2xl bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-xl border transition-all duration-300 flex flex-col justify-between group cursor-pointer"
+                    style={{
+                      borderColor:
+                        hoveredSkill === skill.name
+                          ? skill.color
+                          : "rgba(255, 255, 255, 0.12)",
+                      boxShadow:
+                        hoveredSkill === skill.name
+                          ? `0 15px 35px -10px ${skill.glowColor}, 0 0 20px -2px ${skill.color}44`
+                          : "0 10px 25px -5px rgba(0, 0, 0, 0.5)",
+                    }}
+                  >
+                    <div>
+                      {/* Top Row: Icon + Level Badge */}
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        {/* 3D Glowing Brand Icon */}
+                        <div
+                          className="w-10 h-10 rounded-xl flex items-center justify-center text-xl transition-transform duration-300 group-hover:scale-110 border"
+                          style={{
+                            color: skill.color,
+                            backgroundColor: `${skill.color}15`,
+                            borderColor: `${skill.color}35`,
+                            boxShadow: `0 0 20px ${skill.color}25`,
+                          }}
+                        >
+                          {skill.icon}
+                        </div>
+
+                        {/* Proficiency Badge */}
+                        <span
+                          className="text-[10px] font-semibold px-2 py-0.5 rounded-full border transition-all duration-300"
+                          style={{
+                            color: skill.color,
+                            borderColor: `${skill.color}40`,
+                            backgroundColor: `${skill.color}12`,
+                          }}
+                        >
+                          {skill.level}
+                        </span>
                       </div>
 
-                      {/* Proficiency Badge */}
-                      <span
-                        className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border transition-all duration-300"
-                        style={{
-                          color: skill.color,
-                          borderColor: `${skill.color}40`,
-                          backgroundColor: `${skill.color}12`,
-                        }}
-                      >
-                        {skill.level}
-                      </span>
+                      {/* Skill Title & Category */}
+                      <h3 className="text-base font-bold text-white group-hover:text-white transition-colors duration-200">
+                        {skill.name}
+                      </h3>
+                      <p className="text-[11px] text-gray-400 mt-0.5 font-medium">
+                        {skill.categoryLabel}
+                      </p>
+
+                      {/* Short Description */}
+                      <p className="text-[11px] text-gray-300/80 leading-relaxed mt-2">
+                        {skill.description}
+                      </p>
                     </div>
 
-                    {/* Skill Title & Category */}
-                    <h3 className="text-lg font-bold text-white group-hover:text-white transition-colors duration-200">
-                      {skill.name}
-                    </h3>
-                    <p className="text-xs text-gray-400 mt-0.5 font-medium">
-                      {skill.categoryLabel}
-                    </p>
-
-                    {/* Short Description */}
-                    <p className="text-xs text-gray-300/80 leading-relaxed mt-2.5">
-                      {skill.description}
-                    </p>
-                  </div>
-
-                  {/* Bottom Accent Glow Line */}
-                  <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                    <span className="text-[10px] uppercase font-mono tracking-widest text-gray-400">
-                      8D Depth
-                    </span>
-                    <div
-                      className="w-2 h-2 rounded-full transition-all duration-300"
-                      style={{
-                        backgroundColor: skill.color,
-                        boxShadow: `0 0 10px ${skill.color}`,
-                      }}
-                    />
-                  </div>
-                </SpatialCard>
+                    {/* Bottom Accent Glow Line */}
+                    <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between">
+                      <span className="text-[9px] uppercase font-mono tracking-widest text-gray-400">
+                        8D Depth
+                      </span>
+                      <div
+                        className="w-1.5 h-1.5 rounded-full transition-all duration-300"
+                        style={{
+                          backgroundColor: skill.color,
+                          boxShadow: `0 0 10px ${skill.color}`,
+                        }}
+                      />
+                    </div>
+                  </SpatialCard>
+                </div>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -490,7 +486,11 @@ export default function Skills() {
       </div>
 
       {/* Infinite Horizontal Marquee Ticker */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto overflow-hidden pt-4 pb-2">
+      <div
+        data-aos="fade-up"
+        data-aos-offset="50"
+        className="relative z-10 w-full max-w-7xl mx-auto overflow-hidden pt-4 pb-2"
+      >
         <div className="text-center mb-4">
           <span className="text-xs uppercase tracking-widest text-gray-400/80 font-mono">
             // Infinite Ecosystem Stream //

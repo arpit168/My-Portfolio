@@ -163,45 +163,30 @@ export default function Contact() {
 
       {/* Contact Section Content */}
       <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={containerVariants}
+        data-aos="fade-up"
         className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8"
       >
         {/* Section Header */}
         <div className="mb-10 text-center sm:mb-14">
-          <motion.div
-            variants={itemVariants}
-            className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm"
-          >
+          <motion.div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-linear-to-r from-cyan-400 to-blue-500" />
             <span className="text-xs font-medium tracking-wide text-gray-300">
               Get in Touch
             </span>
           </motion.div>
 
-          <motion.h2
-            variants={itemVariants}
-            className="mb-3 bg-linear-to-r from-white via-cyan-100 to-blue-200 bg-clip-text text-3xl font-bold leading-tight text-transparent sm:text-4xl md:text-5xl"
-          >
+          <motion.h2 className="mb-3 bg-linear-to-r from-white via-cyan-100 to-blue-200 bg-clip-text text-3xl font-bold leading-tight text-transparent sm:text-4xl md:text-5xl">
             Let&apos;s Work Together
           </motion.h2>
 
-          <motion.p
-            variants={itemVariants}
-            className="mx-auto max-w-xl px-2 text-sm text-gray-400 sm:text-base"
-          >
+          <motion.p className="mx-auto max-w-xl px-2 text-sm text-gray-400 sm:text-base">
             Have a project in mind? Let&apos;s bring your ideas to life.
           </motion.p>
         </div>
 
         <div className="flex flex-col-reverse items-stretch gap-8 lg:flex-row lg:items-center lg:gap-12">
           {/* Left Animated Image Section */}
-          <motion.div
-            variants={itemVariants}
-            className="flex w-full justify-center lg:w-[42%]"
-          >
+          <motion.div className="flex w-full justify-center lg:w-[42%]">
             <div className="group relative">
               {/* Glow Effect */}
               <div className="absolute -inset-4 rounded-2xl bg-linear-to-r from-cyan-500/20 to-blue-500/20 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
@@ -229,7 +214,7 @@ export default function Contact() {
           </motion.div>
 
           {/* Right Side Contact Form */}
-          <motion.div variants={itemVariants} className="w-full lg:w-[58%]">
+          <motion.div className="w-full lg:w-[58%]">
             <SpatialCard
               maxTilt={8}
               scale={1.01}
@@ -253,7 +238,6 @@ export default function Contact() {
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {/* Name field */}
                   <motion.div
-                    variants={formFieldVariants}
                     onFocus={() => setFocusedField("name")}
                     onBlur={() => setFocusedField(null)}
                   >
@@ -295,7 +279,6 @@ export default function Contact() {
 
                   {/* Email field */}
                   <motion.div
-                    variants={formFieldVariants}
                     onFocus={() => setFocusedField("email")}
                     onBlur={() => setFocusedField(null)}
                   >
@@ -344,7 +327,6 @@ export default function Contact() {
                 >
                   {/* Service dropdown */}
                   <motion.div
-                    variants={formFieldVariants}
                     onFocus={() => setFocusedField("service")}
                     onBlur={() => setFocusedField(null)}
                   >
@@ -451,7 +433,6 @@ export default function Contact() {
 
                 {/* Idea textarea */}
                 <motion.div
-                  variants={formFieldVariants}
                   onFocus={() => setFocusedField("idea")}
                   onBlur={() => setFocusedField(null)}
                 >

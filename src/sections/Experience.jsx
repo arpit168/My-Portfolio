@@ -186,7 +186,10 @@ export default function Experience() {
         <div className="sticky top-0 h-screen flex flex-col justify-between overflow-hidden">
           {/* Section Title */}
           <div className="shrink-0 px-4 sm:px-6 pt-6 sm:pt-8 md:pt-10">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mt-3 sm:mt-5 text-center text-white">
+            <h2
+              data-aos="fade-down"
+              className="text-3xl sm:text-4xl lg:text-5xl font-semibold mt-3 sm:mt-5 text-center text-white"
+            >
               Experience
             </h2>
           </div>
