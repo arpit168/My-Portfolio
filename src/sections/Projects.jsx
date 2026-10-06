@@ -172,6 +172,7 @@ export default function Projects() {
         {/* Section Header */}
         <div className="z-20 text-center flex flex-col items-center pt-2">
           <div
+            data-aos="fade-down"
             className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wide mb-1.5 backdrop-blur-md transition-all duration-500 border"
             style={{
               backgroundColor: `${currentProject.accentColor}18`,
@@ -189,7 +190,11 @@ export default function Projects() {
               0{activeIndex + 1} / 0{projects.length}
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white drop-shadow-sm">
+          <h2
+            data-aos="fade-up"
+            data-aos-delay="100"
+            className="text-2xl sm:text-3xl font-bold tracking-tight text-white drop-shadow-sm"
+          >
             My Work
           </h2>
         </div>

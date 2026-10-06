@@ -56,31 +56,29 @@ function Testimonials() {
       className="relative w-full bg-black text-white flex flex-col items-center px-4 sm:px-6 md:px-8 pt-8 sm:pt-12 md:pt-14 pb-16 sm:pb-20 md:pb-24 overflow-hidden"
     >
       {/* Subtle ambient lighting */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden="true"
+      >
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-40 bg-[#1CD8D2]/8 blur-[100px]" />
       </div>
 
       {/* Animated Section Title */}
-      <MH2
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6 }}
+      <h2
+        data-aos="fade-down"
         className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-10 sm:mb-14 text-center text-white"
       >
         What People Say
-      </MH2>
+      </h2>
 
       {/* Grid for all testimonial cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 max-w-6xl w-full">
         {/* Looping through testimonials array to create each card */}
         {testimonials.map((testi, idx) => (
-          <MDiv
+          <div
             key={testi.name + idx} // Unique key for React rendering
-            initial={{ opacity: 0, y: 50 }} // Start invisible & slightly below
-            whileInView={{ opacity: 1, y: 0 }} // Animate when in viewport
-            transition={{ duration: 0.5, delay: idx * 0.15 }} // Stagger effect based on index
-            viewport={{ once: true }} // Animate only the first time it's visible
+            data-aos="fade-up"
+            data-aos-delay={idx * 150}
           >
             <SpatialCard
               maxTilt={16}
@@ -107,7 +105,7 @@ function Testimonials() {
               {/* Their role/job title */}
               <p className="text-sm text-[#1CD8D2]">{testi.role}</p>
             </SpatialCard>
-          </MDiv>
+          </div>
         ))}
       </div>
     </section>

@@ -1,9 +1,11 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect, lazy, Suspense, useRef } from "react";
 import IntroAnimation from "./components/IntroAnimation";
 import Navbar from "./components/Navbar";
 import CustomCursor from "./components/CustomCursor";
 import Home from "./sections/Home";
 import ReactLenis, { useLenis } from "lenis/react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 // Lazy-loaded below-the-fold sections
 const About = lazy(() => import("./sections/About"));
@@ -21,6 +23,41 @@ function SectionFallback({ id, minHeight = "min-h-screen" }) {
       className={`w-full ${minHeight} bg-black`}
       aria-hidden="true"
     />
+  );
+}
+
+// True Lazy Loading component that only renders when scrolled near
+function LazySection({ children, id, minHeight = "min-h-screen" }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Artificial delay to make the app feel slow
+          setTimeout(() => {
+            setIsVisible(true);
+          }, 1500);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px" }, // Wait until strictly in viewport
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className={!isVisible ? minHeight : ""}>
+      {isVisible ? (
+        <Suspense fallback={<SectionFallback id={id} minHeight={minHeight} />}>
+          {children}
+        </Suspense>
+      ) : (
+        <SectionFallback id={id} minHeight={minHeight} />
+      )}
+    </div>
   );
 }
 
@@ -50,24 +87,14 @@ function AnchorScroller() {
 export default function App() {
   const [introDone, setIntroDone] = useState(false);
 
-  // Idly prefetch below-the-fold chunks after initial load so scrolling is instantaneous
+  // Initialize AOS
   useEffect(() => {
-    const prefetch = () => {
-      import("./sections/About");
-      import("./sections/Skills");
-      import("./sections/Projects");
-      import("./sections/Experience");
-      import("./sections/Testimonials");
-      import("./sections/Contact");
-      import("./sections/Footer");
-    };
-    if (typeof window !== "undefined") {
-      if ("requestIdleCallback" in window) {
-        window.requestIdleCallback(prefetch);
-      } else {
-        setTimeout(prefetch, 250);
-      }
-    }
+    AOS.init({
+      duration: 3000,
+      once: true,
+      easing: "ease-in-out",
+      offset: 100,
+    });
   }, []);
 
   return (
@@ -75,9 +102,9 @@ export default function App() {
       <ReactLenis
         root
         options={{
-          lerp: 0.085,
-          wheelMultiplier: 1.0,
-          touchMultiplier: 1.0,
+          lerp: 0.02,
+          wheelMultiplier: 0.4,
+          touchMultiplier: 0.5,
           smoothWheel: true,
           syncTouch: false,
           orientation: "vertical",
@@ -94,27 +121,33 @@ export default function App() {
         {/* Homepage always present (masked reveal) */}
         <Home introDone={introDone} />
 
-        <Suspense fallback={<SectionFallback id="about" />}>
+        <LazySection id="about">
           <About />
-        </Suspense>
-        <Suspense fallback={<SectionFallback id="skills" />}>
+        </LazySection>
+
+        <LazySection id="skills">
           <Skills />
-        </Suspense>
-        <Suspense fallback={<SectionFallback id="projects" />}>
+        </LazySection>
+
+        <LazySection id="projects">
           <Projects />
-        </Suspense>
-        <Suspense fallback={<SectionFallback id="experience" minHeight="min-h-[500px]" />}>
+        </LazySection>
+
+        <LazySection id="experience" minHeight="min-h-[500px]">
           <Experience />
-        </Suspense>
-        <Suspense fallback={<SectionFallback id="testimonials" minHeight="min-h-[500px]" />}>
+        </LazySection>
+
+        <LazySection id="testimonials" minHeight="min-h-[500px]">
           <Testimonials />
-        </Suspense>
-        <Suspense fallback={<SectionFallback id="contact" />}>
+        </LazySection>
+
+        <LazySection id="contact">
           <Contact />
-        </Suspense>
-        <Suspense fallback={<SectionFallback id="footer" minHeight="min-h-[250px]" />}>
+        </LazySection>
+
+        <LazySection id="footer" minHeight="min-h-[250px]">
           <Footer />
-        </Suspense>
+        </LazySection>
       </ReactLenis>
     </div>
   );

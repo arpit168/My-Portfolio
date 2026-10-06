@@ -4,7 +4,7 @@ import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 
 gsap.registerPlugin(MorphSVGPlugin);
 
-const greetings = ["Hii", "Hello", "नमस्ते", "Hola", "Hej", "Hallo"];
+const greetings = ["Hii", "Hello", "नमस्ते", "Welcome"];
 
 export default function IntroAnimation({ onFinish }) {
   const [index, setIndex] = useState(0);
@@ -18,14 +18,22 @@ export default function IntroAnimation({ onFinish }) {
       gsap.fromTo(
         greetingRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.12 },
+        { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" },
       );
-      greetingTimer = setTimeout(() => setIndex((i) => i + 1), 180);
+
+      greetingTimer = setTimeout(() => {
+        gsap.to(greetingRef.current, {
+          opacity: 0,
+          y: -20,
+          duration: 0.8,
+          onComplete: () => setIndex((i) => i + 1),
+        });
+      }, 2000);
     } else {
       gsap.fromTo(
         greetingRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.12 },
+        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" },
       );
 
       greetingTimer = setTimeout(() => {
@@ -34,19 +42,19 @@ export default function IntroAnimation({ onFinish }) {
         });
 
         tl.to([overlayRef.current, greetingRef.current], {
-          duration: 1.8,
+          duration: 2.5,
           y: "-100vh",
           ease: "power4.inOut",
         }).to(
           overlayRef.current.querySelector("path"),
           {
-            duration: 1.8,
+            duration: 2.5,
             morphSVG: "M0,0 L0,300 Q720,900 1440,300 L1440,0 Z",
             ease: "power4.inOut",
           },
           "<",
         );
-      }, 300);
+      }, 2500);
     }
 
     return () => clearTimeout(greetingTimer);

@@ -19,12 +19,9 @@ export default function About() {
       {/* Content container */}
       <div className="relative z-10 max-w-6xl w-full mx-auto px-6 md:px-10 lg:px-12 py-20 flex flex-col gap-12">
         {/* Profile header */}
-        <motion.div
+        <div
+          data-aos="fade-up"
           className="flex flex-col md:flex-row items-center md:items-center gap-8 lg:gap-12"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true, amount: 0.4 }}
         >
           {/* Avatar / Card with 3D Spatial Tilt hugging exact image aspect ratio */}
           <SpatialCard
@@ -100,17 +97,11 @@ export default function About() {
               </a>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Body copy only — removed skills chip grid */}
         <div className="grid md:grid-cols-1">
-          <motion.div
-            className="text-center md:text-left"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true, amount: 0.4 }}
-          >
+          <div data-aos="fade-right" className="text-center md:text-left">
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
               About Me
             </h3>
@@ -123,7 +114,7 @@ export default function About() {
               I love turning ideas into scalable, user-friendly products that
               make an impact.
             </p>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
