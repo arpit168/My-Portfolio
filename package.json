@@ -15,7 +15,8 @@
     "test": "vitest run",
     "preview": "vite preview",
     "doctor": "npx react-doctor@latest",
-    "ci": "npm run lint && npm run typecheck && npm run test && npm audit --audit-level=high && npm run build"
+    "ci": "npm run lint && npm run typecheck && npm run test && npm audit --audit-level=high && npm run build",
+    "verify:lockfile": "npm ci --dry-run"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
