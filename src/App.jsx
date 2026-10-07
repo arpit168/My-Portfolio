@@ -35,14 +35,11 @@ function LazySection({ children, id, minHeight = "min-h-screen" }) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Artificial delay to make the app feel slow
-          setTimeout(() => {
-            setIsVisible(true);
-          }, 1500);
+          setIsVisible(true);
           observer.disconnect();
         }
       },
-      { rootMargin: "0px" }, // Wait until strictly in viewport
+      { rootMargin: "200px" },
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
@@ -72,7 +69,7 @@ function AnchorScroller() {
       if (href && href.startsWith("#") && lenis) {
         e.preventDefault();
         lenis.scrollTo(href, {
-          duration: 1.4,
+          duration: 0.8,
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         });
       }
@@ -90,10 +87,10 @@ export default function App() {
   // Initialize AOS
   useEffect(() => {
     AOS.init({
-      duration: 3000,
+      duration: 800,
       once: true,
-      easing: "ease-in-out",
-      offset: 100,
+      easing: "ease-out",
+      offset: 50,
     });
   }, []);
 
@@ -102,9 +99,9 @@ export default function App() {
       <ReactLenis
         root
         options={{
-          lerp: 0.02,
-          wheelMultiplier: 0.4,
-          touchMultiplier: 0.5,
+          lerp: 0.1,
+          wheelMultiplier: 1,
+          touchMultiplier: 1,
           smoothWheel: true,
           syncTouch: false,
           orientation: "vertical",
