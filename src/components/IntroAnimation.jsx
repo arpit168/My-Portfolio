@@ -18,22 +18,22 @@ export default function IntroAnimation({ onFinish }) {
       gsap.fromTo(
         greetingRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
       );
 
       greetingTimer = setTimeout(() => {
         gsap.to(greetingRef.current, {
           opacity: 0,
           y: -20,
-          duration: 0.8,
+          duration: 0.3,
           onComplete: () => setIndex((i) => i + 1),
         });
-      }, 2000);
+      }, 400);
     } else {
       gsap.fromTo(
         greetingRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
       );
 
       greetingTimer = setTimeout(() => {
@@ -42,19 +42,19 @@ export default function IntroAnimation({ onFinish }) {
         });
 
         tl.to([overlayRef.current, greetingRef.current], {
-          duration: 2.5,
+          duration: 1.2,
           y: "-100vh",
           ease: "power4.inOut",
         }).to(
           overlayRef.current.querySelector("path"),
           {
-            duration: 2.5,
+            duration: 1.2,
             morphSVG: "M0,0 L0,300 Q720,900 1440,300 L1440,0 Z",
             ease: "power4.inOut",
           },
           "<",
         );
-      }, 2500);
+      }, 800);
     }
 
     return () => clearTimeout(greetingTimer);
