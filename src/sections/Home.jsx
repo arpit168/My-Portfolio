@@ -70,7 +70,7 @@ const Home = React.forwardRef((props, ref) => {
   useEffect(() => {
     const current = roles[index];
     const isFullWord = !deleting && subIndex === current.length;
-    const delay = isFullWord ? 1400 : deleting ? 35 : 55;
+    const delay = isFullWord ? 800 : deleting ? 20 : 35;
 
     const timeout = setTimeout(() => {
       if (!deleting && subIndex < current.length) {
@@ -124,13 +124,13 @@ const Home = React.forwardRef((props, ref) => {
           className="lg:col-span-7 flex flex-col justify-center text-center lg:text-left relative lg:pr-6"
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           {/* Status Badge */}
           <motion.div
             initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
+            transition={{ delay: 0.1, duration: 0.4 }}
             className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-xs font-medium tracking-wide mx-auto lg:mx-0 w-fit backdrop-blur-xl bg-white/5 border border-[#1CD8D2]/35 shadow-[0_0_25px_rgba(28,216,210,0.2)] mb-5"
           >
             <span className="relative flex h-2 w-2">
@@ -149,7 +149,7 @@ const Home = React.forwardRef((props, ref) => {
             className="text-lg sm:text-xl md:text-2xl font-mono text-[#00f0ff] font-medium tracking-wider mb-2 min-h-[1.8em] flex items-center justify-center lg:justify-start"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.35, duration: 0.6 }}
+            transition={{ delay: 0.2, duration: 0.4 }}
           >
             <span className="text-white/40 mr-2 font-sans text-sm tracking-normal">
               I build as a
@@ -165,7 +165,7 @@ const Home = React.forwardRef((props, ref) => {
             className="text-4xl sm:text-6xl md:text-7xl lg:text-7.5xl font-black tracking-tight text-white leading-[1.08] drop-shadow-2xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.45, duration: 0.8 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
           >
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-white to-gray-400 font-extrabold block text-2xl sm:text-3xl md:text-4xl mb-1 text-white/70">
               Hello, I'm
@@ -180,7 +180,7 @@ const Home = React.forwardRef((props, ref) => {
             className="mt-5 text-base sm:text-lg md:text-xl text-gray-300/90 leading-relaxed max-w-xl mx-auto lg:mx-0 font-normal"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.7 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
           >
             Architecting next-generation digital products with{" "}
             <span className="text-white font-medium">
@@ -196,7 +196,7 @@ const Home = React.forwardRef((props, ref) => {
             className="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-5"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.75, duration: 0.7 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
           >
             {/* Primary 8D Glowing CTA */}
             <a
@@ -223,7 +223,7 @@ const Home = React.forwardRef((props, ref) => {
             className="mt-9 pt-7 border-t border-white/10 grid grid-cols-3 gap-2 sm:gap-4 max-w-lg mx-auto lg:mx-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.9, duration: 0.7 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
           >
             {highlights.map((item) => (
               <div key={item.label} className="flex flex-col">
@@ -242,7 +242,7 @@ const Home = React.forwardRef((props, ref) => {
             className="mt-7 flex items-center justify-center lg:justify-start gap-3.5"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.05, duration: 0.6 }}
+            transition={{ delay: 0.7, duration: 0.4 }}
           >
             {socials.map(({ Icon, label, href, color, glow }) => (
               <a
@@ -278,7 +278,7 @@ const Home = React.forwardRef((props, ref) => {
           className="lg:col-span-5 relative flex items-center justify-center mt-8 lg:mt-0"
           initial={{ opacity: 0, scale: 0.92, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.8, ease: "easeOut" }}
+          transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
         >
           {/* Holographic 8D Orbit Ring 1 (Horizontal Gyro) */}
           <div
